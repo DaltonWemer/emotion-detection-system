@@ -79,7 +79,7 @@ These two programs than communicate via standart streams.
 
 4. A page should spawn looking as follows:
 
-![alt text](../img/example.png)
+![alt text](../img/currentGUI.png)
 
 1. Press __LAUNCH PROGRAM___ button
 
