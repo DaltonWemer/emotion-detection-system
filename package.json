@@ -1,0 +1,8 @@
+{
+    "name": "electron-gui-for-anything",
+    "version": "0.1.0",
+    "main": "./electron/main.js",
+    "scripts": {
+        "start": "electron ."
+    }
+}
