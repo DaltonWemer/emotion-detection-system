@@ -1,4 +1,6 @@
 const ipc = require('electron').ipcRenderer;
+var MediaStreamRecorder = require('msr');
+
 // const exec = require('child_process').exec;
 const exec = require('child_process').exec;
 
@@ -67,9 +69,37 @@ async function checkDevice(constraints) {
     });
   }
 
+  let chunks = []
+  function startRecording(){
+    var mediaConstraints = {
+        audio: true
+    };
+    
+    navigator.getUserMedia(mediaConstraints, onMediaSuccess, onMediaError);
+    
+    function onMediaSuccess(stream) {
+        var mediaRecorder = new MediaStreamRecorder(stream);
+        mediaRecorder.mimeType = 'audio/wav'; // check this line for audio/wav
+        mediaRecorder.ondataavailable = function (blob) {
+            // POST/PUT "Blob" using FormData/XHR2
+            var blobURL = URL.createObjectURL(blob);
+            // document.write('<a href="' + blobURL + '">' + blobURL + '</a>');
+            mediaRecorder.save();
+        };
+        mediaRecorder.start(3000);
+        // mediaRecorder.stop();
+    }
+    
+    function onMediaError(e) {
+        console.error('media error', e);
+    }
+  }
+
+
+
 
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById("start_code").addEventListener("click", start_code_function);
+    document.getElementById("start_code").addEventListener("click", startRecording);
     document.getElementById("mircophone").addEventListener("click", checkDevice);
     document.getElementById("send_code").addEventListener("click", send_code_function);
     document.getElementById("stop_code").addEventListener("click", stop_code_function);

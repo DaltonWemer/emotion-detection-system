@@ -4,5 +4,8 @@
     "main": "./electron/main.js",
     "scripts": {
         "start": "electron ."
+    },
+    "dependencies": {
+        "msr": "^1.3.4"
     }
 }

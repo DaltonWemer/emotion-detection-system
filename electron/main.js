@@ -20,8 +20,8 @@ function createWindow() {
         resizable: false,
         webPreferences: {
             preload: path.join(__dirname, 'home.js'),
-            contextIsolation: true
-                // nodeIntegration: true
+            contextIsolation: true,
+            nodeIntegration: true
         }
     })
 
@@ -29,7 +29,7 @@ function createWindow() {
     mainWindow.loadFile('./electron/home.html');
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools()
+    // mainWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
