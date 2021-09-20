@@ -10,7 +10,6 @@ var my_console = new nodeConsole.Console(process.stdout, process.stderr);
 var child;
 
 window.onload = function() {
-    console.log('Load is now called!')
     // Load our recording animation into memory
     lottie.loadAnimation({
         container: document.getElementById('recordingAnimation'),
@@ -100,7 +99,8 @@ async function checkDevice(constraints) {
     function onMediaSuccess(stream) {
         var mediaRecorder = new MediaStreamRecorder(stream);
         mediaRecorder.mimeType = 'audio/wav'; // check this line for audio/wav
-
+        mediaRecorder.audioChannels = 1;
+        
         document.getElementById("recordingAnimation").style.display = "block" 
         isRecording = true
 
