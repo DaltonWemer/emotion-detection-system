@@ -1,5 +1,6 @@
 const ipc = require('electron').ipcRenderer;
 var MediaStreamRecorder = require('msr');
+var lottie = require('lottie-web');
 
 // const exec = require('child_process').exec;
 const exec = require('child_process').exec;
@@ -7,6 +8,20 @@ const exec = require('child_process').exec;
 var nodeConsole = require('console');
 var my_console = new nodeConsole.Console(process.stdout, process.stderr);
 var child;
+
+window.onload = function() {
+    console.log('Load is now called!')
+    // Load our recording animation into memory
+    lottie.loadAnimation({
+        container: document.getElementById('recordingAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'img/recorder.json'
+    })
+    document.getElementById("recordingAnimation").style.display = "none" 
+}
+
 
 function print_both(str) {
     console.log('Javascript: ' + str);
@@ -70,25 +85,46 @@ async function checkDevice(constraints) {
   }
 
   let chunks = []
+  isRecording = false
+
   function startRecording(){
+    // Filter out webcams from our media
     var mediaConstraints = {
         audio: true
     };
     
+    // Confirm that our electron app has access to the desired microphone
     navigator.getUserMedia(mediaConstraints, onMediaSuccess, onMediaError);
     
+    // If we have access to the microphone, create the MediaStreamRecorder and start recording
     function onMediaSuccess(stream) {
         var mediaRecorder = new MediaStreamRecorder(stream);
         mediaRecorder.mimeType = 'audio/wav'; // check this line for audio/wav
+
+        document.getElementById("recordingAnimation").style.display = "block" 
+        isRecording = true
+
+        //Plays audio alerting the user that the recording has started
+        var audio = new Audio('./img/retone.mp3');
+        audio.play();
+
         mediaRecorder.ondataavailable = function (blob) {
-            // POST/PUT "Blob" using FormData/XHR2
             var blobURL = URL.createObjectURL(blob);
-            // document.write('<a href="' + blobURL + '">' + blobURL + '</a>');
-            mediaRecorder.save();
+            mediaRecorder.stop();
+            mediaRecorder.save();    
+            document.getElementById("recordingAnimation").style.display = "none" 
+
         };
-        mediaRecorder.start(3000);
-        // mediaRecorder.stop();
+
+        // Recorder is in miliseconds 
+        mediaRecorder.start(5 * 1000);
+
+        // mediaRecorder.onstop = function() {
+        //     mediaRecorder.save();
+        // };
     }
+    
+    
     
     function onMediaError(e) {
         console.error('media error', e);
@@ -96,7 +132,7 @@ async function checkDevice(constraints) {
   }
 
 
-
+  
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("start_code").addEventListener("click", startRecording);

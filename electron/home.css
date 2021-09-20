@@ -32,6 +32,14 @@ body {
     justify-content: center;
 }
 
+.button:active {
+  /* set time duration to your needs */
+  animation: gradient 100ms;
+  background: #c471ed;
+  color: #fff;
+  box-shadow: none;
+}
+
 html { height: 100%; }
 body { 
   text-align: center;
