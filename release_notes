@@ -6,4 +6,6 @@
 - Created stop button.
 - Start Stop buttons merged. Just one button now.
 - Enviroment related path variables are at the top of home.js
+- extract_features.py added. This script can extract MFCCs from the audio files and save those to the base of the /recordings directory
+-
 

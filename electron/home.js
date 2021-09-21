@@ -42,7 +42,7 @@ function send_to_program(str) {
 // starts program execution from within javascript and
 function start_code_function(evt) {
     print_both('Initiating program');
-    child = exec("python -i ./external_programs/python_example.py ", function (error, stdout, stderr) {
+    child = exec("python -i ./external_programs/extract_features.py", function (error, stdout, stderr) {
         if (error !== null) {
             print_both('exec error: ' + error);
         }
@@ -142,6 +142,7 @@ function startRecording() {
             document.getElementById("start_code").removeEventListener("click", stopRecording);
             document.getElementById("start_code").addEventListener("click", startRecording);
             document.getElementById("start_code").innerHTML = "Record"
+            start_code_function();
         };
 
         // Recorder is in miliseconds 
