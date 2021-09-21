@@ -1,8 +1,9 @@
 9/20/2021 - Seth Swango
 - Delayed recording until after the "start recording" tone. Sound is now 0.36 seconds instead of 1.6
-- File button now opens file explorer to the 'archive' folder of the project using the relative path
+- File button now opens file explorer to the 'recordings' folder of the project using the relative path (OS agnostic)
 - Audio recordings are now immediately saved to 'emotion-detection-system\que' so that they are ready for processing.
   In the event recording is ran again, this file is overwritten.
+- Created stop button.
 - Start Stop buttons merged. Just one button now.
 - Enviroment related path variables are at the top of home.js
 
