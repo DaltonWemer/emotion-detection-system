@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta charset="utf-8" />
     <title>Emotion Detection</title>
     <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans:600'>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <link rel="stylesheet" href="home.css">
-    
+
     <script src="https://cdn.webrtc-experiment.com/MediaStreamRecorder.js"> </script>
     <script src="home.js"></script>
 </head>
@@ -15,16 +17,15 @@
 <body>
     <div class="container col-xs-12">
         <div class="row toolbar">
-            <a
-                id="mircophone"
-            >
-                <img  type="submit" src="./img/microphone.svg" class="icon microphone" />
+            <a id="mircophone">
+                <img type="submit" src="./img/microphone.svg" class="icon microphone" />
             </a>
 
-            <img src="./img/portfolio.svg" class="icon" />
+            <img src="./img/portfolio.svg" class="icon" id="open_file" />
         </div>
         <h1 class="linear-wipe">How are you feeling?</h1>
-        <div style="height: 180px; width: 180px; position: absolute; margin-left: 32%; bottom: 55px;" id="recordingAnimation"></div>
+        <div style="height: 180px; width: 180px; position: absolute; margin-left: 32%; bottom: 55px;"
+            id="recordingAnimation"></div>
         <div id="start_code" type="submit" class="col-md-12 mx-auto button" value="Record"">
             <h5>Record</h5>
         </div>
