@@ -42,7 +42,7 @@ function send_to_program(str) {
 // starts program execution from within javascript and
 function start_code_function(evt) {
     print_both('Initiating program');
-    child = exec("python -i ./external_programs/extract_features.py", function (error, stdout, stderr) {
+    child = exec("python ./external_programs/classify.py", function (error, stdout, stderr) {
         if (error !== null) {
             print_both('exec error: ' + error);
         }
@@ -68,7 +68,7 @@ function stop_code_function(evt) {
     child.stdin.end();
 }
 
-// requests main.js to open a file from the filesystem
+// requests os to open a file explorer to recording archive
 function open_file_function(evt) {
     // print_both('From gui_example.js sending a request to main.js via ipc');
     // ipc.send('open_json_file');
@@ -102,10 +102,19 @@ async function checkDevice(constraints) {
         });
 }
 
+const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
 let chunks = []
 isRecording = false
 
-function startRecording() {
+async function startRecording() {
+
+    //Plays audio alerting the user that the recording has started
+    var audio = new Audio('./img/retone.mp3');
+    audio.play();
+    await sleep(360); //audio clip is 360 milliseconds
     // Filter out webcams from our media
     var mediaConstraints = {
         audio: true
@@ -122,12 +131,6 @@ function startRecording() {
 
         document.getElementById("recordingAnimation").style.display = "block"
         isRecording = true
-
-        //Plays audio alerting the user that the recording has started
-        var audio = new Audio('./img/retone.mp3');
-        audio.play();
-
-        delayInMilliseconds(360); //audio clip is 360 milliseconds
 
         document.getElementById("start_code").innerHTML = "Stop"
         document.getElementById("start_code").removeEventListener("click", startRecording);

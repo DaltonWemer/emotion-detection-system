@@ -5,7 +5,6 @@ import glob
 import os
 from sklearn.model_selection import train_test_split
 
-# we allow only these emotions
 AVAILABLE_EMOTIONS = {
     "angry",
     "fearful",
@@ -16,17 +15,7 @@ AVAILABLE_EMOTIONS = {
 
 
 def extract_feature(file_name, **kwargs):
-    """
-    Extract feature from audio file `file_name`
-        Features supported:
-            - MFCC (mfcc)
-            - Chroma (chroma)
-            - MEL Spectrogram Frequency (mel)
-            - Contrast (contrast)
-            - Tonnetz (tonnetz)
-        e.g:
-        `features = extract_feature(path, mel=True, mfcc=True)`
-    """
+
     mfcc = kwargs.get("mfcc")
     chroma = kwargs.get("chroma")
     mel = kwargs.get("mel")
@@ -64,17 +53,11 @@ def extract_feature(file_name, **kwargs):
 def load_data(test_size=0.2):
     X, y = [], []
     for file in glob.glob("ourData/*.wav"):
-        # get the base name of the audio file
         basename = os.path.basename(file)
-        # get the emotion label
         emotion = basename.split("-")[1]
-        # we allow only AVAILABLE_EMOTIONS we set
         if emotion not in AVAILABLE_EMOTIONS:
             continue
-        # extract speech features
         features = extract_feature(file, mfcc=True, chroma=True, mel=True)
-        # add to data
         X.append(features)
         y.append(emotion)
-    # split the data to training and testing and return it
     return train_test_split(np.array(X), y, test_size=test_size, random_state=7)
