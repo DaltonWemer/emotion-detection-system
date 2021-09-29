@@ -42,8 +42,19 @@ These two programs than communicate via standart streams.
 1. Dowload and install [Python39](https://www.python.org/downloads/)
 
 2. Install [Anaconda](https://www.anaconda.com/products/individual)
-   ```
-   git clone https://github.com/keybraker/electron-GUI-for-python.git
+   
+3. install build tools
+
+4. In cmd, type pip3 install misaka
+
+restart
+
+anaconda install pyaudio
+anaconda install librosa
+pip install -r requirments.txt
+python classifier.py
+if you get error related to NN model location, you are good to go. Launc electron
+
 
 ## Execution Guide
 
@@ -92,3 +103,5 @@ These two programs than communicate via standart streams.
 [![Electron Version](https://img.shields.io/badge/electron-v11.1.0-green.svg)](https://electron.atom.io)
 [![OSX Version](https://img.shields.io/badge/OS%20X-v11.0.1-green.svg)](https://www.apple.com/lae/macos/big-sur/)
 [![Ubuntu](https://img.shields.io/badge/Ubuntu-v20.0.4-green.svg)](https://ubuntu.com)
+
+
