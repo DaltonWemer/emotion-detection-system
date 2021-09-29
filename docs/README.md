@@ -1,49 +1,27 @@
-# Electron GUI for Python
+# Python Emotion Detection and Recognition System With Electron GUI
 
-A simple example on how to create an electron GUI for a python program and interacting with it.
+This project contains a simple electron GUI that allows the user to record .wav files. After they are recorded the emotion in them is classified. The Electron shell contains all the interface and recording features. When the Electron shell finishes recording, it immediatly calls a Python script against the .wav file. This Python scripts extracts features from the audio then classifies the emotion using an artificial nueral net.
 
 ## How does it work ( simple representation )
 
 ```text
 electron
---------> |------------|    python
-          |            |-------------> |-------------------|
-          |  electron  |  sub process  | python program    |
-          |  --------  |               | --------------    |
-          |   > html   |      std      |  takes requests   |
-          |   > css    | <-----------> |  from js and      |
-          |   > js     | communication |  responds it,     |
-          |            |               |  in the terminal  |
-          |------------|               |-------------------|
+-------->|---------------|   executes 
+         |   electron    |-------------> |-------------------|
+         | html, css, js |               | python program    |
+         |   --------    | >|.wav file|> | --------------    |
+         |  > records    |               |  extracts         |
+         |  > calls      |               |  features and     |
+         |    python     |   emotion     |  classifies       |
+         |    script     | <------------ |  emotion          |
+         |---------------|               |-------------------|
 ```
 
 Essentially no network is being created only one terminal is used when electron is launched and than from 
 within javascript ( electron ) a python program is initiated as a subprocess.
 These two programs than communicate via standart streams.
 
-### Structure of example
-
-```text
-│ 
-├── docs
-│   ├── README.md
-│   └── LICENSE
-|
-├── img
-│   └── example.png
-|
-├── gui_example.html
-├── gui_example.css
-├── gui_example.js
-├── main.js
-│ 
-├── python_example.py
-| 
-├── config.json
-└── package.json
-```
-
-## Installation Guide
+## Electron Installation Guide
 
 1. To download and install [electron](https://electron.atom.io) ( OS X or Linux ) you have to download it from [npm-electron](https://www.npmjs.com/package/electron) using :
 
@@ -59,6 +37,13 @@ These two programs than communicate via standart streams.
    ```
    git clone https://github.com/keybraker/electron-GUI-for-python.git
    ```
+## Emotion Detection and Recognition System Installation Guide
+
+1. Dowload and install [Python39](https://www.python.org/downloads/)
+
+2. Install [Anaconda](https://www.anaconda.com/products/individual)
+   ```
+   git clone https://github.com/keybraker/electron-GUI-for-python.git
 
 ## Execution Guide
 
