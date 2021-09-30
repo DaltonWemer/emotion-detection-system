@@ -43,17 +43,33 @@ These two programs than communicate via standart streams.
 
 2. Install [Anaconda](https://www.anaconda.com/products/individual)
    
-3. install build tools
+3. install build tools: https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019
+   -- install the C++ Buildtools
+   ![alt text](../img/c++buildTools.jpg)
 
-4. In cmd, type pip3 install misaka
+4. restart your computer
 
-restart
+6. Open administrative powershell and type `pip3 install misaka`
 
-anaconda install pyaudio
-anaconda install librosa
-pip install -r requirments.txt
-python classifier.py
-if you get error related to NN model location, you are good to go. Launc electron
+7. type `conda install pyaudio`
+
+8. type `conda install numba`
+
+9. `conda install librosa`
+
+10. navigate in PowerShell to the docs folder of the project
+
+11. `conda install --file requirements.txt` if you get errors, try the next step
+
+12. `pip install -r requirements.txt`
+
+13. type `pip3 install misaka`
+
+14. if you haven't gotten any install issues, naviage to the root of the project
+
+15. `python external_programs\classify.py` the console should classify the file in emotion-detection-system\recordings\
+
+16. You should be set to start classifying through the GUI by launching electron as outlined below
 
 
 ## Execution Guide
@@ -105,9 +121,7 @@ if you get error related to NN model location, you are good to go. Launc electro
 [![Ubuntu](https://img.shields.io/badge/Ubuntu-v20.0.4-green.svg)](https://ubuntu.com)
 
 
-# [How to Make a Speech Emotion Recognizer Using Python And Scikit-learn](https://www.thepythoncode.com/article/building-a-speech-emotion-recognizer-using-sklearn)
-To run this, you need to:
-- `pip3 install -r requirements.txt`
+# Using the Classification Model as a Developer
 
 It is already trained, you can use `test.py` to test your voice.
 
