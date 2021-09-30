@@ -55,7 +55,7 @@ These two programs than communicate via standart streams.
 
 8. type `conda install numba`
 
-9. `conda install librosa`
+9. `conda install librosa` 
 
 10. navigate in PowerShell to the docs folder of the project
 
