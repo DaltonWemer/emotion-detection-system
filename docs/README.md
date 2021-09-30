@@ -61,13 +61,11 @@ These two programs than communicate via standart streams.
 
 12. `pip install -r requirements.txt`
 
-13. type `pip3 install misaka`
+13. if you haven't gotten any install errors, naviage to the root of the project
 
-14. if you haven't gotten any install errors, naviage to the root of the project
+14. `python external_programs\classify.py` the console should classify the file in emotion-detection-system\recordings\
 
-15. `python external_programs\classify.py` the console should classify the file in emotion-detection-system\recordings\
-
-16. You should be set to start classifying through the GUI by launching electron as outlined below
+15. You should be set to start classifying through the GUI by launching electron as outlined below
 
 
 ## Execution Guide
