@@ -65,7 +65,7 @@ These two programs than communicate via standart streams.
 
 13. type `pip3 install misaka`
 
-14. if you haven't gotten any install issues, naviage to the root of the project
+14. if you haven't gotten any install errors, naviage to the root of the project
 
 15. `python external_programs\classify.py` the console should classify the file in emotion-detection-system\recordings\
 
