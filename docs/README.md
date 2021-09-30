@@ -43,9 +43,7 @@ These two programs than communicate via standart streams.
 
 2. Install [Anaconda](https://www.anaconda.com/products/individual)
    
-3. install build tools: https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019
-   -- install the C++ Buildtools
-   ![alt text](../img/c++buildTools.jpg)
+3. install build tools: https://visualstudio.microsoft.com/visual-cpp-build-tools/
 
 4. restart your computer
 
