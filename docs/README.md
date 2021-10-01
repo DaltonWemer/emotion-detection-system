@@ -1,9 +1,5 @@
 # Python Emotion Detection and Recognition System With Electron GUI
 
-This project contains a simple electron GUI that allows the user to record .wav files. After they are recorded the emotion in them is classified. The Electron shell contains all the interface and recording features. When the Electron shell finishes recording, it immediatly calls a Python script against the .wav file. This Python scripts extracts features from the audio then classifies the emotion using an artificial nueral net.
-
-## How does it work ( simple representation )
-
 ```text
 electron
 -------->|---------------|   executes 
@@ -17,9 +13,7 @@ electron
          |---------------|               |-------------------|
 ```
 
-Essentially no network is being created only one terminal is used when electron is launched and than from 
-within javascript ( electron ) a python program is initiated as a subprocess.
-These two programs than communicate via standart streams.
+This project contains a simple electron GUI that allows the user to record .wav files. After they are recorded the emotion in them is classified. The Electron shell contains all the interface and recording features. When the Electron shell finishes recording, it immediatly calls a Python script against the .wav file. This Python scripts extracts features from the audio then classifies the emotion using an artificial nueral net.
 
 
 ## Emotion Detection and Recognition System Installation Guide
@@ -34,9 +28,9 @@ These two programs than communicate via standart streams.
    ```
    ( if you don't have npm installed use this [link](https://nodejs.org/en/download/) to download it. )
 
-2. Dowload and install [Python39](https://www.python.org/downloads/)
+2. If you don't have it alread, install [Python39](https://www.python.org/downloads/). Python3 is used for emotion classification.
 
-3. Install [Anaconda](https://www.anaconda.com/products/individual)
+3. Install [Anaconda](https://www.anaconda.com/products/individual). Anaconda is an excellent Python3 package manager that will help
    
 4. install build tools: https://visualstudio.microsoft.com/visual-cpp-build-tools/
 
@@ -84,41 +78,3 @@ These two programs than communicate via standart streams.
 
 ![alt text](../img/currentGUI.png)
 
-1. Press __LAUNCH PROGRAM___ button
-
-   this will launch a python application with a loop inside,
-   that is waiting for data to be send from js
-
-2. Press __INTERACT WITH PROGRAM__ button
-
-   this will send a message named "hello" from js to python
-   and python will read it and print a message
-
-3. Press __TERMINATE PROGRAM__ button
-
-   a termination message ("terminate") is sent to the program which knows
-   to stop the loop and execution
-
-4. Press __HOW TO OPEN A FILE__ button
-
-   from ```electron/gui_example.js``` an ipc.send message is sent to the main.js
-   which will then read and output `config.json` values (fast feature to store settings).
-
-
-[![Python 2 Version](https://img.shields.io/badge/Python-2.7.16-green.svg)](https://www.python.org/downloads/)
-[![Python 3 Version](https://img.shields.io/badge/Python-3.9.1-green.svg)](https://www.python.org/download/releases/3.0/)
-[![Electron Version](https://img.shields.io/badge/electron-v11.1.0-green.svg)](https://electron.atom.io)
-[![OSX Version](https://img.shields.io/badge/OS%20X-v11.0.1-green.svg)](https://www.apple.com/lae/macos/big-sur/)
-[![Ubuntu](https://img.shields.io/badge/Ubuntu-v20.0.4-green.svg)](https://ubuntu.com)
-
-
-# Using the Classification Model as a Developer
-
-It is already trained, you can use `test.py` to test your voice.
-
-You can:
-- Tweak the model parameters ( or the whole model ) in `ser.py`.
-- Add more data to `data` folder in condition that the audio samples are converted to 16000Hz sample rate and mono channel, `convert_wavs.py` does that.
-- Editing the emotions specified in `utils.py` in `AVAILABLE_EMOTIONS` constant.
-
-When you modified anything, you can run `ser.py` to retrain the model.
