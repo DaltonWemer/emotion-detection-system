@@ -75,7 +75,7 @@ def extract_feature(file_name, **kwargs):
 
     if chroma or contrast:
         stft = np.abs(librosa.stft(X))
-    result = np.array([])
+        result = np.array([])
     if mfcc:
         mfccs = np.mean(librosa.feature.mfcc(
             y=X, sr=sample_rate, n_mfcc=40).T, axis=0)
