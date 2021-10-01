@@ -16,6 +16,7 @@ const open_file_path = '.\\recordings';
 const audio_recording_path = '.\\recordings\\recording.wav'
 
 window.onload = function () {
+    // Insert try catch here that calls log_error from utils.py when an error occurs
     // Load our recording animation into memory
     lottie.loadAnimation({
         container: document.getElementById('recordingAnimation'),
