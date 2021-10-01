@@ -1,49 +1,27 @@
-# Electron GUI for Python
+# Python Emotion Detection and Recognition System With Electron GUI
 
-A simple example on how to create an electron GUI for a python program and interacting with it.
+This project contains a simple electron GUI that allows the user to record .wav files. After they are recorded the emotion in them is classified. The Electron shell contains all the interface and recording features. When the Electron shell finishes recording, it immediatly calls a Python script against the .wav file. This Python scripts extracts features from the audio then classifies the emotion using an artificial nueral net.
 
 ## How does it work ( simple representation )
 
 ```text
 electron
---------> |------------|    python
-          |            |-------------> |-------------------|
-          |  electron  |  sub process  | python program    |
-          |  --------  |               | --------------    |
-          |   > html   |      std      |  takes requests   |
-          |   > css    | <-----------> |  from js and      |
-          |   > js     | communication |  responds it,     |
-          |            |               |  in the terminal  |
-          |------------|               |-------------------|
+-------->|---------------|   executes 
+         |   electron    |-------------> |-------------------|
+         | html, css, js |               | python program    |
+         |   --------    | >|.wav file|> | --------------    |
+         |  > records    |               |  extracts         |
+         |  > calls      |               |  features and     |
+         |    python     |   emotion     |  classifies       |
+         |    script     | <------------ |  emotion          |
+         |---------------|               |-------------------|
 ```
 
 Essentially no network is being created only one terminal is used when electron is launched and than from 
 within javascript ( electron ) a python program is initiated as a subprocess.
 These two programs than communicate via standart streams.
 
-### Structure of example
-
-```text
-│ 
-├── docs
-│   ├── README.md
-│   └── LICENSE
-|
-├── img
-│   └── example.png
-|
-├── gui_example.html
-├── gui_example.css
-├── gui_example.js
-├── main.js
-│ 
-├── python_example.py
-| 
-├── config.json
-└── package.json
-```
-
-## Installation Guide
+## Electron Installation Guide
 
 1. To download and install [electron](https://electron.atom.io) ( OS X or Linux ) you have to download it from [npm-electron](https://www.npmjs.com/package/electron) using :
 
@@ -59,6 +37,40 @@ These two programs than communicate via standart streams.
    ```
    git clone https://github.com/keybraker/electron-GUI-for-python.git
    ```
+## Emotion Detection and Recognition System Installation Guide
+
+1. Dowload and install [Python39](https://www.python.org/downloads/)
+
+2. Install [Anaconda](https://www.anaconda.com/products/individual)
+   
+3. install build tools: https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019
+   -- install the C++ Buildtools
+   ![alt text](../img/c++buildTools.jpg)
+
+4. restart your computer
+
+6. Open administrative powershell and type `pip3 install misaka`
+
+7. type `conda install pyaudio`
+
+8. type `conda install numba`
+
+9. `conda install librosa` 
+
+10. navigate in PowerShell to the docs folder of the project
+
+11. `conda install --file requirements.txt` if you get errors, try the next step
+
+12. `pip install -r requirements.txt`
+
+13. type `pip3 install misaka`
+
+14. if you haven't gotten any install issues, naviage to the root of the project
+
+15. `python external_programs\classify.py` the console should classify the file in emotion-detection-system\recordings\
+
+16. You should be set to start classifying through the GUI by launching electron as outlined below
+
 
 ## Execution Guide
 
@@ -107,3 +119,17 @@ These two programs than communicate via standart streams.
 [![Electron Version](https://img.shields.io/badge/electron-v11.1.0-green.svg)](https://electron.atom.io)
 [![OSX Version](https://img.shields.io/badge/OS%20X-v11.0.1-green.svg)](https://www.apple.com/lae/macos/big-sur/)
 [![Ubuntu](https://img.shields.io/badge/Ubuntu-v20.0.4-green.svg)](https://ubuntu.com)
+
+
+# Using the Classification Model as a Developer
+
+It is already trained, you can use `test.py` to test your voice.
+
+You can:
+- Tweak the model parameters ( or the whole model ) in `ser.py`.
+- Add more data to `data` folder in condition that the audio samples are converted to 16000Hz sample rate and mono channel, `convert_wavs.py` does that.
+- Editing the emotions specified in `utils.py` in `AVAILABLE_EMOTIONS` constant.
+
+When you modified anything, you can run `ser.py` to retrain the model.
+
+If you want to only use this efficiently, definitely check [Emotion Recognition using Speech](https://github.com/x4nth055/emotion-recognition-using-speech) repository which ease this process a lot.
