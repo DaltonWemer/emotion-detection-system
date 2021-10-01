@@ -43,9 +43,7 @@ These two programs than communicate via standart streams.
 
 2. Install [Anaconda](https://www.anaconda.com/products/individual)
    
-3. install build tools: https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019
-   -- install the C++ Buildtools
-   ![alt text](../img/c++buildTools.jpg)
+3. install build tools: https://visualstudio.microsoft.com/visual-cpp-build-tools/
 
 4. restart your computer
 
@@ -63,13 +61,11 @@ These two programs than communicate via standart streams.
 
 12. `pip install -r requirements.txt`
 
-13. type `pip3 install misaka`
+13. if you haven't gotten any install errors, naviage to the root of the project
 
-14. if you haven't gotten any install issues, naviage to the root of the project
+14. `python external_programs\classify.py` the console should classify the file in emotion-detection-system\recordings\
 
-15. `python external_programs\classify.py` the console should classify the file in emotion-detection-system\recordings\
-
-16. You should be set to start classifying through the GUI by launching electron as outlined below
+15. You should be set to start classifying through the GUI by launching electron as outlined below
 
 
 ## Execution Guide
@@ -131,5 +127,3 @@ You can:
 - Editing the emotions specified in `utils.py` in `AVAILABLE_EMOTIONS` constant.
 
 When you modified anything, you can run `ser.py` to retrain the model.
-
-If you want to only use this efficiently, definitely check [Emotion Recognition using Speech](https://github.com/x4nth055/emotion-recognition-using-speech) repository which ease this process a lot.
