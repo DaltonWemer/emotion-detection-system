@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     logging.basicConfig(filename="recordings/archive/fileLogTest.txt", format="%(asctime)s Error Message: %(message)s\n")
 
-    # load the saved model (after training)
+    # load the saved model (after training)!
     try:
         model = pickle.load(
             open("./external_programs/result/mlp_classifier.model", "rb"))
