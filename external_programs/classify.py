@@ -1,5 +1,6 @@
 import pyaudio
 import os
+import logging
 import wave
 import pickle
 from sys import byteorder
@@ -11,9 +12,16 @@ from utils import extract_feature
 
 
 if __name__ == "__main__":
+
+    logging.basicConfig(filename="recordings/archive/fileLogTest.txt", format="%(asctime)s Error Message: %(message)s\n")
+
     # load the saved model (after training)
-    model = pickle.load(
-        open("./external_programs/result/mlp_classifier.model", "rb"))
+    try:
+        model = pickle.load(
+            open("./external_programs/result/mlp_classifier.model", "rb"))
+    except Exception as e:
+        logging.error("~Error: Failed to load classifier model\n" + e, exc_info=True)
+
     # print("Please talk")
     # filename = "test.wav"
     # record the file (start talking)
@@ -21,10 +29,18 @@ if __name__ == "__main__":
     # extract features and reshape it
     dirname = os.path.dirname(__file__)
     filename = os.path.join(dirname, '../recordings/recording.wav')
-    features = extract_feature(
-        filename, mfcc=True, chroma=True, mel=True).reshape(1, -1)
+    try:
+        features = extract_feature(
+            filename, mfcc=True, chroma=True, mel=True).reshape(1, -1)
+    except Exception as e:
+        logging.error("~Error: Failed to process audio\n" + e, exc_info=True)
+
     # predict
-    result = model.predict(features)[0]
+    try:
+        result = model.predict(features)[0]
+    except Exception as e:
+        logging.error("~Error: Failed to make prediction\n" + e, exc_info=True)
+
     # show the result !
     file = open("result.txt", "w")
     file.write(result)
