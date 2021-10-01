@@ -21,7 +21,8 @@ Essentially no network is being created only one terminal is used when electron 
 within javascript ( electron ) a python program is initiated as a subprocess.
 These two programs than communicate via standart streams.
 
-## Electron Installation Guide
+
+## Emotion Detection and Recognition System Installation Guide
 
 1. To download and install [electron](https://electron.atom.io) ( OS X or Linux ) you have to download it from [npm-electron](https://www.npmjs.com/package/electron) using :
 
@@ -33,19 +34,13 @@ These two programs than communicate via standart streams.
    ```
    ( if you don't have npm installed use this [link](https://nodejs.org/en/download/) to download it. )
 
-2. Clone this repository:
-   ```
-   git clone https://github.com/keybraker/electron-GUI-for-python.git
-   ```
-## Emotion Detection and Recognition System Installation Guide
+2. Dowload and install [Python39](https://www.python.org/downloads/)
 
-1. Dowload and install [Python39](https://www.python.org/downloads/)
-
-2. Install [Anaconda](https://www.anaconda.com/products/individual)
+3. Install [Anaconda](https://www.anaconda.com/products/individual)
    
-3. install build tools: https://visualstudio.microsoft.com/visual-cpp-build-tools/
+4. install build tools: https://visualstudio.microsoft.com/visual-cpp-build-tools/
 
-4. restart your computer
+5. restart your computer
 
 6. Open administrative powershell and type `pip3 install misaka`
 
