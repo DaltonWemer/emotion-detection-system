@@ -5,6 +5,7 @@
 .tags*
 .vs/
 .vscode/
+*.wav
 *.log
 *.pyc
 *.sln
