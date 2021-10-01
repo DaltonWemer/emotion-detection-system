@@ -6,7 +6,7 @@ import os
 from sklearn.model_selection import train_test_split
 
 AVAILABLE_EMOTIONS = {
-    "angry",
+    "anger",
     "fearful",
     "happy",
     "normal",
