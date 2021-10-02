@@ -18,63 +18,48 @@ This project contains a simple electron GUI that allows the user to record .wav 
 
 ## Emotion Detection and Recognition System Installation Guide
 
-1. To download and install [electron](https://electron.atom.io) ( OS X or Linux ) you have to download it from [npm-electron](https://www.npmjs.com/package/electron) using :
-
-   ```
-   npm install electron --save-dev
-   ```
-   ```
-   npm install -g electron
-   ```
-   ( if you don't have npm installed use this [link](https://nodejs.org/en/download/) to download it. )
+1. To download and install [electron](https://electron.atom.io) ( OS X or Linux ) you have to download it from [npm-electron](https://www.npmjs.com/package/electron) using: 
+   `npm install electron --save-dev` then `npm install -g electron`
+   (if you don't have npm installed use this [link](https://nodejs.org/en/download/) to download it.)
 
 2. If you don't have it alread, install [Python39](https://www.python.org/downloads/). Python3 is used for emotion classification.
 
-3. Install [Anaconda](https://www.anaconda.com/products/individual). Anaconda is an excellent Python3 package manager that will help
+3. Install [Anaconda](https://www.anaconda.com/products/individual). Anaconda is an excellent Python3 package manager that will ease the process of installing Python modules and dependencies.
    
-4. install build tools: https://visualstudio.microsoft.com/visual-cpp-build-tools/
+4. Install [Microsoft Visual C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) 
 
-5. restart your computer
+5. At this stage, it is highly reccomended to restart your computer in order to refresh the enviroment.
 
-6. Open administrative powershell and type `pip3 install misaka`
+6. Open an elevated PowerShell session and install our first needed Python Module: `pip3 install misaka`
 
-7. type `conda install pyaudio`
+7. Install the pyaudio module using Anaconbda: `conda install pyaudio`
 
-8. type `conda install numba`
+8. Install the numba module: `conda install numba`
 
-9. `conda install librosa` 
+9. Install the librosa module: `conda install librosa` 
 
-10. navigate in PowerShell to the docs folder of the project
+10. If you haven't already cloned the project, go ahead and clone it to a known location. Using your elevated PowerShell session navigate to the project's 'docs' folder: `cd emotion_detection_system\docs`. 
 
-11. `conda install --file requirements.txt` if you get errors, try the next step
+11. Use Anaconda to install most of the remaining needed modules by calling on our requirements.txt file: `conda install --file requirements.txt`. If not all modules can be installed, try moving on to step 12.
 
-12. `pip install -r requirements.txt`
+12. Install the remaining modules using Pip: `pip install -r requirements.txt`. If not all modules install, try completing step 11 again, then returning to this step.
 
-13. if you haven't gotten any install errors, naviage to the root of the project
+13. Once all modules listed in requirements.txt have been installed, then we need to install our NodeJS dependencies. From within PowerShell navigate to the root of the project: `cd ..`
 
-14. `python external_programs\classify.py` the console should classify the file in emotion-detection-system\recordings\
-
-15. You should be set to start classifying through the GUI by launching electron as outlined below
-
+14. Initialize the elcetron aplication and install any needed NodeJS dependencies: ```npm i```
 
 ## Execution Guide
 
-1. Open a terminal window and cd to cloned project
-   ```
-   cd electron-GUI-for-python
-   ```
+1. Open a terminal window to the root of the cloned project: ```cd emotion_detection_system```
 
-2. Initialize the elcetron aplication (first-time)
-   ```
-   npm i
-   ```
+2. Run the electron application ```npm start```
 
-3. Run the electron application
-   ```
-   npm start
-   ```
-
-4. A page should spawn looking as follows:
+4. A page should spawn looking as follows. Click the 'record' button to record an audio clip up to ten seconds long. The application will immediately classify the emotion in the audio then display the classification.
 
 ![alt text](../img/currentGUI.png)
+
+### Extended Documentation
+
+To find out more about how to use the project or how it works, please refer to our wiki: https://github.com/DaltonWemer/emotion-detection-system/wiki
+
 
