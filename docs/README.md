@@ -15,7 +15,8 @@ electron
 
 This project contains a simple electron GUI that allows the user to record .wav files. After they are recorded the emotion in them is classified. The Electron shell contains all the interface and recording features. When the Electron shell finishes recording, it immediatly calls a Python script against the .wav file. This Python scripts extracts features from the audio then classifies the emotion using an artificial nueral net.
 
-This is a quick guide to get the project up and running locally. For more information please visit our wiki: https://github.com/DaltonWemer/emotion-detection-system/wiki
+
+### This README is a quick guide to get the project up and running locally. For more information please visit our [Wiki](https://github.com/DaltonWemer/emotion-detection-system/wiki)
 
 
 ## Emotion Detection and Recognition System Installation Guide
