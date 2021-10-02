@@ -1,5 +1,7 @@
 # Python Emotion Detection and Recognition System With Electron GUI
 
+### This README is a quick guide to get the project up and running locally. For more information please visit our [Wiki](https://github.com/DaltonWemer/emotion-detection-system/wiki)
+
 ```text
 electron
 -------->|---------------|   executes 
@@ -16,10 +18,8 @@ electron
 This project contains a simple electron GUI that allows the user to record .wav files. After they are recorded the emotion in them is classified. The Electron shell contains all the interface and recording features. When the Electron shell finishes recording, it immediatly calls a Python script against the .wav file. This Python scripts extracts features from the audio then classifies the emotion using an artificial nueral net.
 
 
-### This README is a quick guide to get the project up and running locally. For more information please visit our [Wiki](https://github.com/DaltonWemer/emotion-detection-system/wiki)
-
-
 ## Emotion Detection and Recognition System Installation Guide
+
 
 1. To download and install [electron](https://electron.atom.io) ( OS X or Linux ) you have to download it from [npm-electron](https://www.npmjs.com/package/electron) using: 
    `npm install electron --save-dev` then `npm install -g electron`
@@ -51,13 +51,16 @@ This project contains a simple electron GUI that allows the user to record .wav 
 
 14. Initialize the electron aplication and install any needed NodeJS dependencies: ```npm i```
 
+
 ## Execution Guide
+
 
 1. Open a terminal window to the root of the cloned project: ```cd emotion_detection_system```
 
 2. Run the electron application ```npm start```
 
 4. A page should spawn looking as follows. Click the 'record' button to record an audio clip up to ten seconds long. The application will immediately classify the emotion in the audio then display the classification.
+
 
 ![alt text](../img/currentGUI.png)
 
