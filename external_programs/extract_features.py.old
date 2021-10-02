@@ -5,6 +5,10 @@ import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from python_speech_features import mfcc, logfbank
 
+#
+# THIS FILE PROVIDES AN EXAMPLE OF HOW TO EXTRACT FEATURES AND PLOT THEM WITH MATPLOTLIB, IT IS NOT CURRENTLY UTILIZED IN THE PROJECT
+#
+
 dirname = os.path.dirname(__file__)
 filename = os.path.join(dirname, '../recordings/recording.wav')
 
