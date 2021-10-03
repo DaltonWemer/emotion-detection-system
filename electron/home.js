@@ -29,6 +29,7 @@ window.onload = function () {
     document.getElementById("recordingAnimation").style.display = "none"
 
     //Create select options for mics on system
+    navigator.mediaDevices.getUserMedia({ audio: true });
     navigator.mediaDevices.enumerateDevices()
         .then(function (devices) {
             audioInputSelect = document.getElementById("microphone-select");
@@ -39,8 +40,9 @@ window.onload = function () {
                 if (device.kind == "audioinput" && usedGroupIds.indexOf(device.groupId) == -1) {
                     usedGroupIds.push(device.groupId);
                     var option = document.createElement("option");
-                    audioInputSelect.appendChild(option);
                     option.innerHTML = device.label;
+                    option.value = device.deviceId;
+                    audioInputSelect.appendChild(option);
                     console.log(device.label);
                 }
             });
