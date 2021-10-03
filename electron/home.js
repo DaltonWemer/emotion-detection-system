@@ -32,15 +32,17 @@ window.onload = function () {
     navigator.mediaDevices.enumerateDevices()
         .then(function (devices) {
             audioInputSelect = document.getElementById("microphone-select");
+            let usedGroupIds = [];
             devices.forEach(function (device) {
-                if (device.kind == "audioinput" && device.label[0] == "M") {
+                console.log(device);
+                //filter out video devices and duplicates
+                if (device.kind == "audioinput" && usedGroupIds.indexOf(device.groupId) == -1) {
+                    usedGroupIds.push(device.groupId);
                     var option = document.createElement("option");
                     audioInputSelect.appendChild(option);
                     option.innerHTML = device.label;
-                    //console.log(device.label);
-
+                    console.log(device.label);
                 }
-
             });
         })
 }
@@ -106,23 +108,6 @@ function open_file_function(evt) {
     });
 }
 
-async function checkDevice(constraints) {
-    let stream = null;
-
-    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-        .then(function (stream) {
-            /* use the stream */
-            console.log(stream)
-
-
-
-        })
-        .catch(function (err) {
-            /* handle the error */
-            console.log(err)
-        });
-}
-
 const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
@@ -135,9 +120,10 @@ async function startRecording() {
     //Plays audio alerting the user that the recording has started
     var audio = new Audio('./img/retone.mp3');
     audio.play();
-    await sleep(360); //audio clip is 360 milliseconds
+    await sleep(400); //audio clip is 360 milliseconds
     // Filter out webcams from our media and choose mic
     let audioSource = audioInputSelect.value;
+    console.log(audioSource);
     var mediaConstraints = {
         audio: { deviceId: audioSource }
     };
@@ -206,35 +192,23 @@ function bufferToStream(buffer) {
 
 saveAudioBlob = async function (audioBlobToSave, fPath) {
     console.log(`Trying to save: ${fPath}`);
-
     // create the writeStream - this line creates the 0kb file, ready to be written to
     const writeStream = fs.createWriteStream(fPath);
     console.log(writeStream); // WriteStream {...}
-
     // The incoming data 'audioToSave' is an array containing a single blob of data.
     console.log(audioBlobToSave); // [Blob]
-
     // now we go through the following process: blob > arrayBuffer > array > buffer > readStream:
-    const arrayBuffer = await audioBlobToSave.arrayBuffer();
-    console.log(arrayBuffer); // ArrayBuffer(17955) {}
-
-    const array = new Uint8Array(arrayBuffer);
-    console.log(array); // Uint8Array(17955) [26, 69, ... ]
-
-    const buffer = Buffer.from(array);
-    console.log(buffer); // Buffer(17955) [26, 69, ... ]
-
-    let readStream = bufferToStream(buffer);
-    console.log(readStream); // Readable {_readableState: ReadableState, readable: true, ... }
-
+    const arrayBuffer = await audioBlobToSave.arrayBuffer(); // ArrayBuffer(17955) {}
+    const array = new Uint8Array(arrayBuffer); // Uint8Array(17955) [26, 69, ... ]
+    const buffer = Buffer.from(array); // Buffer(17955) [26, 69, ... ]
+    let readStream = bufferToStream(buffer); // Readable {_readableState: ReadableState, readable: true, ... }
     // and now we can pipe:
     readStream.pipe(writeStream);
-
 }
 
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("start_code").addEventListener("click", startRecording);
-    document.getElementById("mircophone").addEventListener("click", checkDevice);
+    //document.getElementById("mircophone").addEventListener("click", checkDevice);
     //document.getElementById("send_code").addEventListener("click", send_code_function);
     //document.getElementById("stop_code").addEventListener("click", stop_code_function);
     document.getElementById("open_file").addEventListener("click", open_file_function);
