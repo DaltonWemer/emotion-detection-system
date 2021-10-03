@@ -11,6 +11,7 @@ const exec = require('child_process').exec;
 var nodeConsole = require('console');
 var my_console = new nodeConsole.Console(process.stdout, process.stderr);
 var child;
+var audioInputSelect;
 
 const open_file_path = '.\\recordings';
 const audio_recording_path = '.\\recordings\\recording.wav'
@@ -26,6 +27,22 @@ window.onload = function () {
         path: 'img/recorder.json'
     })
     document.getElementById("recordingAnimation").style.display = "none"
+
+    //Create select options for mics on system
+    navigator.mediaDevices.enumerateDevices()
+        .then(function (devices) {
+            audioInputSelect = document.getElementById("microphone-select");
+            devices.forEach(function (device) {
+                if (device.kind == "audioinput" && device.label[0] == "M") {
+                    var option = document.createElement("option");
+                    audioInputSelect.appendChild(option);
+                    option.innerHTML = device.label;
+                    //console.log(device.label);
+
+                }
+
+            });
+        })
 }
 
 function print_both(str) {
@@ -96,6 +113,9 @@ async function checkDevice(constraints) {
         .then(function (stream) {
             /* use the stream */
             console.log(stream)
+
+
+
         })
         .catch(function (err) {
             /* handle the error */
@@ -116,17 +136,20 @@ async function startRecording() {
     var audio = new Audio('./img/retone.mp3');
     audio.play();
     await sleep(360); //audio clip is 360 milliseconds
-    // Filter out webcams from our media
+    // Filter out webcams from our media and choose mic
+    let audioSource = audioInputSelect.value;
     var mediaConstraints = {
-        audio: true
+        audio: { deviceId: audioSource }
     };
 
     // Confirm that our electron app has access to the desired microphone
     navigator.getUserMedia(mediaConstraints, onMediaSuccess, onMediaError);
-
     // If we have access to the microphone, create the MediaStreamRecorder and start recording
     function onMediaSuccess(stream) {
+
         var mediaRecorder = new MediaStreamRecorder(stream);
+        //console.log("recording with: " + mediaConstraints.audio.deviceId);
+
         mediaRecorder.mimeType = 'audio/wav'; // check this line for audio/wav
         mediaRecorder.audioChannels = 1;
         mediaRecorder.sampleRate = 44100;
@@ -179,6 +202,7 @@ function bufferToStream(buffer) {
     stream.push(null);
     return stream;
 }
+
 
 saveAudioBlob = async function (audioBlobToSave, fPath) {
     console.log(`Trying to save: ${fPath}`);

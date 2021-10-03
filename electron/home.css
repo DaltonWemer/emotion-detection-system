@@ -48,7 +48,11 @@ body {
   justify-content: center;
   align-items: center;
 }
-
+select, label{
+  background-color: #3A3A3A;
+    color: #EEE;
+  
+}
 h1 { font-size: 40px }
 .linear-wipe {
   text-align: center;
