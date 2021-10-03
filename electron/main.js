@@ -2,7 +2,6 @@
 const { app, BrowserWindow, ipcMain, Notification } = require("electron");
 const exec = require('child_process').exec;
 const path = require('path')
-
 var nodeConsole = require('console');
 var my_console = new nodeConsole.Console(process.stdout, process.stderr);
 var child;
