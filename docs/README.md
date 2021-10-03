@@ -33,9 +33,9 @@ This project contains a simple electron GUI that allows the user to record .wav 
 
 5. At this stage, it is highly reccomended to restart your computer in order to refresh the enviroment.
 
-6. Open an elevated PowerShell session and install our first needed Python Module: `pip3 install misaka`
+6. Open an elevated Anaconda PowerShell session and install our first needed Python Module: `pip3 install misaka`
 
-7. Install the pyaudio module using Anaconbda: `conda install pyaudio`
+7. Install the pyaudio module using Anaconda: `conda install pyaudio`
 
 8. Install the numba module: `conda install numba`
 
