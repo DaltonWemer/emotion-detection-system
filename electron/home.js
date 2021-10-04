@@ -245,7 +245,7 @@ async function moveFile(oldPath, newPath) {
 saveAudioBlob = async function (audioBlobToSave, fPath) {
     print_both(`Trying to save: ${fPath}`);
 
-    // //move old audio file
+    //move old audio file
     // let newFileName = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.wav'").format(new Date());
     // let newPath = audio_archive_path + newFileName;
     // await moveFile(fPath, newPath);
