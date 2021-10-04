@@ -194,8 +194,6 @@ function bufferToStream(buffer) {
 }
 
 async function moveFile(oldPath, newPath) {
-    console.log(oldPath);
-    console.log(newPath);
     if (!fs.existsSync(audio_archive_path)) {
         await fs.mkdir(path.dirname(newPath), { recursive: false }, (err) => {
             if (err) {
