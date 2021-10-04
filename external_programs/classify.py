@@ -14,14 +14,16 @@ from utils import extract_feature
 
 if __name__ == "__main__":
 
-    logging.basicConfig(filename="recordings/archive/fileLogTest.txt", format="%(asctime)s Error Message: %(message)s\n")
+    logging.basicConfig(filename="recordings/archive/fileLogTest.txt",
+                        format="%(asctime)s Error Message: %(message)s\n")
 
     # load the saved model (after training)
     try:
         model = pickle.load(
             open("./external_programs/result/mlp_classifier.model", "rb"))
     except Exception as e:
-        logging.error("~Error: Failed to load classifier model\n" + e, exc_info=True)
+        logging.error(
+            "~Error: Failed to load classifier model\n" + e, exc_info=True)
 
     # print("Please talk")
     # filename = "test.wav"
