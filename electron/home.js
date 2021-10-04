@@ -45,7 +45,6 @@ window.onload = function () {
                     option.innerHTML = device.label;
                     option.value = device.deviceId;
                     audioInputSelect.appendChild(option);
-                    console.log(device.label);
                 }
             });
         })
@@ -207,7 +206,6 @@ async function moveFile(oldPath, newPath) {
         }
     });
 }
-
 
 saveAudioBlob = async function (audioBlobToSave, fPath) {
     print_both(`Trying to save: ${fPath}`);
