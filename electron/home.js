@@ -17,6 +17,7 @@ var audioInputSelect;
 
 const open_file_path = '.\\recordings';
 const audio_recording_path = '.\\recordings\\recording.wav';
+const result_path = '.\\recordings\\result.txt';
 const audio_archive_path = '.\\recordings\\archive\\';
 
 window.onload = function () {
@@ -48,6 +49,39 @@ window.onload = function () {
                 }
             });
         })
+
+    watchForAndDisplayResult();
+}
+
+async function watchForAndDisplayResult() {
+    fs.watch(result_path, (eventType, filename) => {
+        if (eventType == 'change') {
+            let fileContents = fs.readFileSync(result_path, { encoding: 'utf-8' });
+            document.getElementById("result").innerHTML = fileContents;
+            document.getElementById("result-container").style.visibility = "visible";
+            // switch (fileContents) {
+            //     case "anger":
+            //         document.body.style.color = "#d62d20";
+            //         break;
+            //     case "happy":
+            //         document.body.style.color = "#ffa700";
+            //         break;
+            //     case "fearful":
+            //         document.body.style.color = "#962fbf";
+            //         break;
+            //     case "normal":
+            //         document.body.style.color = "#ffffff";
+            //         break;
+            //     case "sad":
+            //         document.body.style.color = "#0057e7";
+            //         break;
+            //     default:
+            //         document.body.style.color = "#111111";
+            //         break;
+            // }
+            // document.body.style.color = ""
+        }
+    });
 }
 
 function print_both(str) {
@@ -122,6 +156,7 @@ async function startRecording() {
 
     //Plays audio alerting the user that the recording has started
     var audio = new Audio('./img/retone.mp3');
+    document.getElementById("result-container").style.visibility = "hidden";
     audio.play();
     await sleep(400); //audio clip is 360 milliseconds
     // Filter out webcams from our media and choose mic
@@ -210,10 +245,10 @@ async function moveFile(oldPath, newPath) {
 saveAudioBlob = async function (audioBlobToSave, fPath) {
     print_both(`Trying to save: ${fPath}`);
 
-    //move old audio file
-    let newFileName = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.wav'").format(new Date());
-    let newPath = audio_archive_path + newFileName;
-    await moveFile(fPath, newPath);
+    // //move old audio file
+    // let newFileName = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.wav'").format(new Date());
+    // let newPath = audio_archive_path + newFileName;
+    // await moveFile(fPath, newPath);
 
     // create the writeStream - this line creates the 0kb file, ready to be written to
     const writeStream = fs.createWriteStream(fPath);

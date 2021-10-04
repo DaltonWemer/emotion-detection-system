@@ -36,6 +36,15 @@ body {
     justify-content: center;
 }
 
+#result-container {
+  visibility: hidden;
+}
+
+.result {
+  display: inline-block;
+  font-size: larger;
+}
+
 .button:active {
   /* set time duration to your needs */
   animation: gradient 100ms;
