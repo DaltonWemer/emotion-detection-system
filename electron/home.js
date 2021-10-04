@@ -210,7 +210,7 @@ async function moveFile(oldPath, newPath) {
 
 
 saveAudioBlob = async function (audioBlobToSave, fPath) {
-    console.log(`Trying to save: ${fPath}`);
+    print_both(`Trying to save: ${fPath}`);
 
     //move old audio file
     let newFileName = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.wav'").format(new Date());
@@ -219,13 +219,6 @@ saveAudioBlob = async function (audioBlobToSave, fPath) {
 
     // create the writeStream - this line creates the 0kb file, ready to be written to
     const writeStream = fs.createWriteStream(fPath);
-
-    console.log(writeStream); // WriteStream {...}
-    // The incoming data 'audioToSave' is an array containing a single blob of data.
-
-    console.log(audioBlobToSave); // [Blob]
-    // now we go through the following process: blob > arrayBuffer > array > buffer > readStream:
-
     const arrayBuffer = await audioBlobToSave.arrayBuffer(); // ArrayBuffer(17955) {}
     const array = new Uint8Array(arrayBuffer); // Uint8Array(17955) [26, 69, ... ]
     const buffer = Buffer.from(array); // Buffer(17955) [26, 69, ... ]
