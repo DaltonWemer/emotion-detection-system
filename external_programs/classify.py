@@ -10,17 +10,18 @@ from sklearn.neural_network import MLPClassifier
 import webbrowser
 from utils import extract_feature
 
+logging.basicConfig(filename="recordings/archive/ErrorLog.txt", format="%(asctime)s %(levelname)s Message: %(message)s\n")
 
 if __name__ == "__main__":
-
-    logging.basicConfig(filename="recordings/archive/fileLogTest.txt", format="%(asctime)s Error Message: %(message)s\n")
-
     # load the saved model (after training)
     try:
+        a = 5/0
         model = pickle.load(
             open("./external_programs/result/mlp_classifier.model", "rb"))
-    except Exception as e:
-        logging.error("~Error: Failed to load classifier model\n" + e, exc_info=True)
+    except Exception as e:    
+        logging.error("~Error: Failed to load classifier model\n"+ str(e) + "\n", exc_info=True)
+        exit()
+
 
     # print("Please talk")
     # filename = "test.wav"
@@ -33,13 +34,13 @@ if __name__ == "__main__":
         features = extract_feature(
             filename, mfcc=True, chroma=True, mel=True).reshape(1, -1)
     except Exception as e:
-        logging.error("~Error: Failed to process audio\n" + e, exc_info=True)
+        logging.error("~Error: Failed to process audio\n" + str(e) + "\n", exc_info=True)
 
     # predict
     try:
         result = model.predict(features)[0]
     except Exception as e:
-        logging.error("~Error: Failed to make prediction\n" + e, exc_info=True)
+        logging.error("~Error: Failed to make prediction\n" + str(e) + "\n", exc_info=True)
 
     # show the result !
     file = open("result.txt", "w")

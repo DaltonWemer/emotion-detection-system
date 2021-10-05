@@ -4,6 +4,11 @@ var lottie = require('lottie-web');
 const openExplorer = require('open-file-explorer');
 let { Readable } = require('stream');
 const fs = require('fs');
+const errOutput = fs.createWriteStream("recordings/archive/ErrorLog.txt", {flags: 'a'});
+const normOutput = fs.createWriteStream("recordings/archive/DataLog.txt", {flags: 'a'});
+
+const { Console } = require("console"); // Get Console class
+const errorLogger = new Console(normOutput, errOutput); // create error Logger
 
 // const exec = require('child_process').exec;
 const exec = require('child_process').exec;
@@ -16,7 +21,6 @@ const open_file_path = '.\\recordings';
 const audio_recording_path = '.\\recordings\\recording.wav'
 
 window.onload = function () {
-    // Insert try catch here that calls log_error from utils.py when an error occurs
     // Load our recording animation into memory
     lottie.loadAnimation({
         container: document.getElementById('recordingAnimation'),
@@ -30,27 +34,39 @@ window.onload = function () {
 
 function print_both(str) {
     console.log('Javascript: ' + str);
-    my_console.log('Javascript: ' + str);
+}
+
+function log_error(str) {
+    errorLogger.error("Error: " + str);
+}
+
+function log_data(str) {
+    errorLogger.log(str);
 }
 
 function send_to_program(str) {
     child.stdin.write(str);
     child.stdout.on('data', function (data) {
         print_both('Following data has been piped from python program: ' + data.toString('utf8'));
+        log_data("Following data has been piped from python program: " + data.toString('utf8'));
     });
 }
 
 // starts program execution from within javascript and
 function start_code_function(evt) {
     print_both('Initiating program');
+    log_data("Initiating Program");
+
     child = exec("python ./external_programs/classify.py", function (error, stdout, stderr) {
         if (error !== null) {
             print_both('exec error: ' + error);
+            log_error("Error executing classify.py");
         }
     });
 
     child.stdout.on('data', function (data) {
         print_both('Calling Python Script ' + data.toString('utf8'));
+        log_data("Calling Python Script " + data.toString('utf8'));
     });
 }
 
@@ -58,6 +74,7 @@ function start_code_function(evt) {
 function send_code_function(evt) {
     let string_to_send = document.getElementById("string_to_send").value;
     print_both('Sending "' + string_to_send + '" to program:');
+    log_data("Sending '" + string_to_send + "' to program:")
     send_to_program(string_to_send);
 }
 
@@ -65,6 +82,7 @@ function send_code_function(evt) {
 // that recieves information from it
 function stop_code_function(evt) {
     print_both('Terminated program');
+    log_data("Terminated program");
     send_to_program("terminate");
     child.stdin.end();
 }
