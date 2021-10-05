@@ -11,6 +11,21 @@ import webbrowser
 from utils import extract_feature
 
 logging.basicConfig(filename="recordings/archive/ErrorLog.txt", format="%(asctime)s %(levelname)s Message: %(message)s\n")
+logger = logging.getLogger(__name__)
+
+data_handler = logging.FileHandler("recordings/archive/DataLog.txt")
+error_handler = logging.FileHandler("recordings/archive/ErrorLog.txt")
+data_handler.setLevel(logging.DEBUG)
+error_handler.setLevel(logging.WARNING)
+
+data_format = logging.Formatter("Data Formatting Here. %(message)s") #TODO: Modify this to the correct format, and configure a NEW file for each call of classify.py.
+error_format = logging.Formatter("\n%asctime)s %(levelname)s Message: %(message)s\n")
+
+data_handler.setFormatter(data_format)
+error_handler.setFormatter(error_format)
+
+logger.addHandler(data_handler)
+logger.addHandler(error_handler)
 
 if __name__ == "__main__":
     # load the saved model (after training)
@@ -19,7 +34,8 @@ if __name__ == "__main__":
         model = pickle.load(
             open("./external_programs/result/mlp_classifier.model", "rb"))
     except Exception as e:    
-        logging.error("~Error: Failed to load classifier model\n"+ str(e) + "\n", exc_info=True)
+        error_handler.error("~Error: Failed to load classifier model\n"+ str(e) + "\n", exc_info=True)
+        data_handler.debug("~Testing Debug")
         exit()
 
 
