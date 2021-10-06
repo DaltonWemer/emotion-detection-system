@@ -15,10 +15,10 @@ var my_console = new nodeConsole.Console(process.stdout, process.stderr);
 var child;
 var audioInputSelect;
 
-const open_file_path = '.\\recordings';
-const audio_recording_path = '.\\recordings\\recording.wav';
-const result_path = '.\\recordings\\result.txt';
-const audio_archive_path = '.\\recordings\\archive\\';
+const open_file_path = '.\\records';
+const audio_recording_path = '.\\records\\recording.wav';
+const result_path = '.\\records\\result.txt';
+const audio_archive_path = '.\\records\\archive\\';
 
 window.onload = function () {
     // Insert try catch here that calls log_error from utils.py when an error occurs
