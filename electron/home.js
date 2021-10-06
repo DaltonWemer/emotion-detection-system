@@ -15,13 +15,12 @@ var my_console = new nodeConsole.Console(process.stdout, process.stderr);
 var child;
 var audioInputSelect;
 
-const open_file_path = '.\\recordings';
-const audio_recording_path = '.\\recordings\\recording.wav';
-const result_path = '.\\recordings\\result.txt';
-const audio_archive_path = '.\\recordings\\archive\\';
+const open_file_path = path.normalize('./records');
+const audio_recording_path = path.normalize('./records/recording.wav');
+const result_path = path.normalize('./records/result.txt');
+const audio_archive_path = path.normalize('./records/archive/');
 
 window.onload = function () {
-    // Insert try catch here that calls log_error from utils.py when an error occurs
     // Load our recording animation into memory
     lottie.loadAnimation({
         container: document.getElementById('recordingAnimation'),
@@ -59,27 +58,26 @@ async function watchForAndDisplayResult() {
             let fileContents = fs.readFileSync(result_path, { encoding: 'utf-8' });
             document.getElementById("result").innerHTML = fileContents;
             document.getElementById("result-container").style.visibility = "visible";
-            // switch (fileContents) {
-            //     case "anger":
-            //         document.body.style.color = "#d62d20";
-            //         break;
-            //     case "happy":
-            //         document.body.style.color = "#ffa700";
-            //         break;
-            //     case "fearful":
-            //         document.body.style.color = "#962fbf";
-            //         break;
-            //     case "normal":
-            //         document.body.style.color = "#ffffff";
-            //         break;
-            //     case "sad":
-            //         document.body.style.color = "#0057e7";
-            //         break;
-            //     default:
-            //         document.body.style.color = "#111111";
-            //         break;
-            // }
-            // document.body.style.color = ""
+            switch (fileContents) {
+                case "anger":
+                    document.getElementById("result-container").style.backgroundColor = "#d62d20";
+                    break;
+                case "happy":
+                    document.getElementById("result-container").style.backgroundColor = "#ffa700";
+                    break;
+                case "fearful":
+                    document.getElementById("result-container").style.backgroundColor = "#962fbf";
+                    break;
+                case "normal":
+                    document.getElementById("result-container").style.backgroundColor = "#ffffff";
+                    break;
+                case "sad":
+                    document.getElementById("result-container").style.backgroundColor = "#0057e7";
+                    break;
+                default:
+                    document.getElementById("result-container").style.backgroundColor = "#111111";
+                    break;
+            }
         }
     });
 }
