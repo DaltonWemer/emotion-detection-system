@@ -75,7 +75,7 @@ if __name__ == "__main__":
         formattedDate = datetime.datetime.now().strftime("%b-%d-%Y_%H-%M-%S")
         newFilename = "../records/archive/" + formattedDate + ".wav"
         archivedFilename = os.path.join(dirname, newFilename)
-        os.replace(filename, archivedFilename)
+        os.rename(filename, archivedFilename)
         eventLogger.info("Classification Result: " + result +
                          "\nArchived File Name: " + formattedDate + ".wav")
     except Exception as e:
