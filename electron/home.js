@@ -4,8 +4,13 @@ var lottie = require('lottie-web');
 const openExplorer = require('open-file-explorer');
 let { Readable } = require('stream');
 const fs = require('fs');
+const errOutput = fs.createWriteStream("recordings/archive/ErrorLog.txt", {flags: 'a'});
+const normOutput = fs.createWriteStream("recordings/archive/DataLog.txt", {flags: 'a'});
 const SimpleDateFormat = require('@riversun/simple-date-format');
 const path = require('path');
+
+const { Console } = require("console"); // Get Console class
+const dataLogger = new Console(normOutput, errOutput); // create error Logger
 
 // const exec = require('child_process').exec;
 const exec = require('child_process').exec;
@@ -84,7 +89,14 @@ async function watchForAndDisplayResult() {
 
 function print_both(str) {
     console.log('Javascript: ' + str);
-    my_console.log('Javascript: ' + str);
+}
+
+function log_error(str) {
+    dataLogger.error("Error: " + str);
+}
+
+function log_data(str) {
+    dataLogger.log(str);
 }
 
 function send_to_program(str) {
@@ -97,9 +109,11 @@ function send_to_program(str) {
 // starts program execution from within javascript and
 function start_code_function(evt) {
     print_both('Initiating program');
+    log_data("Recording in progress");
     child = exec("python ./external_programs/classify.py", function (error, stdout, stderr) {
         if (error !== null) {
             print_both('exec error: ' + error);
+            log_error("ELECTRON ERROR: Error executing classify.py: " + error);
         }
     });
 
@@ -135,7 +149,7 @@ function open_file_function(evt) {
 
     openExplorer(path, err => {
         if (err) {
-            console.log(err);
+            log_error("ELECTRON: Error requesting OS to open a file explorer to recording archive: " + err);
         }
         else {
             //Do Something
