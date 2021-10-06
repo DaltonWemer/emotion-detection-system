@@ -4,6 +4,8 @@ var lottie = require('lottie-web');
 const openExplorer = require('open-file-explorer');
 let { Readable } = require('stream');
 const fs = require('fs');
+const SimpleDateFormat = require('@riversun/simple-date-format');
+const path = require('path');
 const errOutput = fs.createWriteStream("recordings/archive/ErrorLog.txt", {flags: 'a'});
 const normOutput = fs.createWriteStream("recordings/archive/DataLog.txt", {flags: 'a'});
 
@@ -16,9 +18,12 @@ const exec = require('child_process').exec;
 var nodeConsole = require('console');
 var my_console = new nodeConsole.Console(process.stdout, process.stderr);
 var child;
+var audioInputSelect;
 
-const open_file_path = '.\\recordings';
-const audio_recording_path = '.\\recordings\\recording.wav'
+const open_file_path = path.normalize('./records');
+const audio_recording_path = path.normalize('./records/recording.wav');
+const result_path = path.normalize('./records/result.txt');
+const audio_archive_path = path.normalize('./records/archive/');
 
 window.onload = function () {
     // Load our recording animation into memory
@@ -30,6 +35,56 @@ window.onload = function () {
         path: 'img/recorder.json'
     })
     document.getElementById("recordingAnimation").style.display = "none"
+
+    //Create select options for mics on system
+    navigator.mediaDevices.getUserMedia({ audio: true });
+    navigator.mediaDevices.enumerateDevices()
+        .then(function (devices) {
+            audioInputSelect = document.getElementById("microphone-select");
+            let usedGroupIds = [];
+            devices.forEach(function (device) {
+                //filter out video devices and duplicates
+                if (device.kind == "audioinput" && usedGroupIds.indexOf(device.groupId) == -1) {
+                    usedGroupIds.push(device.groupId);
+                    var option = document.createElement("option");
+                    option.innerHTML = device.label;
+                    option.value = device.deviceId;
+                    audioInputSelect.appendChild(option);
+                }
+            });
+        })
+
+    watchForAndDisplayResult();
+}
+
+async function watchForAndDisplayResult() {
+    fs.watch(result_path, (eventType, filename) => {
+        if (eventType == 'change') {
+            let fileContents = fs.readFileSync(result_path, { encoding: 'utf-8' });
+            document.getElementById("result").innerHTML = fileContents;
+            document.getElementById("result-container").style.visibility = "visible";
+            switch (fileContents) {
+                case "anger":
+                    document.getElementById("result-container").style.backgroundColor = "#d62d20";
+                    break;
+                case "happy":
+                    document.getElementById("result-container").style.backgroundColor = "#ffa700";
+                    break;
+                case "fearful":
+                    document.getElementById("result-container").style.backgroundColor = "#962fbf";
+                    break;
+                case "normal":
+                    document.getElementById("result-container").style.backgroundColor = "#ffffff";
+                    break;
+                case "sad":
+                    document.getElementById("result-container").style.backgroundColor = "#0057e7";
+                    break;
+                default:
+                    document.getElementById("result-container").style.backgroundColor = "#111111";
+                    break;
+            }
+        }
+    });
 }
 
 function print_both(str) {
@@ -108,21 +163,6 @@ function open_file_function(evt) {
     });
 }
 
-async function checkDevice(constraints) {
-    let stream = null;
-
-    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-        .then(function (stream) {
-            /* use the stream */
-            console.log(stream)
-        })
-        .catch(function (err) {
-            /* handle the error */
-            console.log(err)
-            log_error("ELECTRON: Error getting user media: " + err);
-        });
-}
-
 const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
@@ -134,27 +174,32 @@ async function startRecording() {
 
     //Plays audio alerting the user that the recording has started
     var audio = new Audio('./img/retone.mp3');
+    document.getElementById("result-container").style.visibility = "hidden";
     audio.play();
-    await sleep(360); //audio clip is 360 milliseconds
-    // Filter out webcams from our media
+    await sleep(400); //audio clip is 360 milliseconds
+    // Filter out webcams from our media and choose mic
+    let audioSource = audioInputSelect.value;
+    console.log(audioSource);
     var mediaConstraints = {
-        audio: true
+        audio: { deviceId: audioSource }
     };
 
     // Confirm that our electron app has access to the desired microphone
     navigator.getUserMedia(mediaConstraints, onMediaSuccess, onMediaError);
-
     // If we have access to the microphone, create the MediaStreamRecorder and start recording
     function onMediaSuccess(stream) {
+
         var mediaRecorder = new MediaStreamRecorder(stream);
+        //console.log("recording with: " + mediaConstraints.audio.deviceId);
+
         mediaRecorder.mimeType = 'audio/wav'; // check this line for audio/wav
         mediaRecorder.audioChannels = 1;
         mediaRecorder.sampleRate = 44100;
 
-        document.getElementById("recordingAnimation").style.display = "block"
-        isRecording = true
+        document.getElementById("recordingAnimation").style.display = "block";
+        isRecording = true;
 
-        document.getElementById("start_code").innerHTML = "Stop"
+        document.getElementById("start_code").innerHTML = "Stop";
         document.getElementById("start_code").removeEventListener("click", startRecording);
         document.getElementById("start_code").addEventListener("click", stopRecording);
 
@@ -163,10 +208,10 @@ async function startRecording() {
             mediaRecorder.stop();
             saveAudioBlob(blob, audio_recording_path)
             //mediaRecorder.save();
-            document.getElementById("recordingAnimation").style.display = "none"
+            document.getElementById("recordingAnimation").style.display = "none";
             document.getElementById("start_code").removeEventListener("click", stopRecording);
             document.getElementById("start_code").addEventListener("click", startRecording);
-            document.getElementById("start_code").innerHTML = "Record"
+            document.getElementById("start_code").innerHTML = "Record";
             start_code_function();
         };
 
@@ -201,37 +246,43 @@ function bufferToStream(buffer) {
     return stream;
 }
 
+async function moveFile(oldPath, newPath) {
+    if (!fs.existsSync(audio_archive_path)) {
+        await fs.mkdir(path.dirname(newPath), { recursive: false }, (err) => {
+            if (err) {
+                print_both(err);
+            }
+        });
+    }
+    return fs.rename(oldPath, newPath, (err) => {
+        if (err) {
+            print_both(err);
+        }
+    });
+}
+
 saveAudioBlob = async function (audioBlobToSave, fPath) {
-    console.log(`Trying to save: ${fPath}`);
+    print_both(`Trying to save: ${fPath}`);
+
+    // //move old audio file
+    // let newFileName = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.wav'").format(new Date());
+    // let newPath = audio_archive_path + newFileName;
+    // await moveFile(fPath, newPath);
 
     // create the writeStream - this line creates the 0kb file, ready to be written to
     const writeStream = fs.createWriteStream(fPath);
-    console.log(writeStream); // WriteStream {...}
-
-    // The incoming data 'audioToSave' is an array containing a single blob of data.
-    console.log(audioBlobToSave); // [Blob]
-
-    // now we go through the following process: blob > arrayBuffer > array > buffer > readStream:
-    const arrayBuffer = await audioBlobToSave.arrayBuffer();
-    console.log(arrayBuffer); // ArrayBuffer(17955) {}
-
-    const array = new Uint8Array(arrayBuffer);
-    console.log(array); // Uint8Array(17955) [26, 69, ... ]
-
-    const buffer = Buffer.from(array);
-    console.log(buffer); // Buffer(17955) [26, 69, ... ]
-
-    let readStream = bufferToStream(buffer);
-    console.log(readStream); // Readable {_readableState: ReadableState, readable: true, ... }
+    const arrayBuffer = await audioBlobToSave.arrayBuffer(); // ArrayBuffer(17955) {}
+    const array = new Uint8Array(arrayBuffer); // Uint8Array(17955) [26, 69, ... ]
+    const buffer = Buffer.from(array); // Buffer(17955) [26, 69, ... ]
+    let readStream = bufferToStream(buffer); // Readable {_readableState: ReadableState, readable: true, ... }
 
     // and now we can pipe:
     readStream.pipe(writeStream);
-
 }
 
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("start_code").addEventListener("click", startRecording);
-    document.getElementById("mircophone").addEventListener("click", checkDevice);
+    //document.getElementById("mircophone").addEventListener("click", checkDevice);
     //document.getElementById("send_code").addEventListener("click", send_code_function);
     //document.getElementById("stop_code").addEventListener("click", stop_code_function);
     document.getElementById("open_file").addEventListener("click", open_file_function);

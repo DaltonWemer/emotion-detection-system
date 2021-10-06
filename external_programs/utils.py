@@ -6,7 +6,6 @@ import glob
 import os
 import noisereduce
 from scipy import signal as sg
-
 from sklearn.model_selection import train_test_split
 
 AVAILABLE_EMOTIONS = {
@@ -17,21 +16,32 @@ AVAILABLE_EMOTIONS = {
     "sad"
 }
 
+# make it easier to adjust directory paths
+directoryToTrainOver = "ourData/*.wav"
 
 # Using scipy's butterworth filter to highpass frequencies
+
+
 def highPassFilterStage(signal, sampleRate, cutoff=120.):
     b, a = sg.butter(6, cutoff / (sampleRate / 2.), 'highpass', analog=False)
     filteredSignal = sg.filtfilt(b, a, signal)
     return filteredSignal
 
+
 # Using denoise library to denoise the signal
+
+
 def denoiseStage(signal, sampleRate):
     # time_constant_s is the time (sec) to compute the noise floor, increased from 1 to 4 for better results
-    return noisereduce.reduce_noise(y= signal, sr = sampleRate, stationary=False, time_constant_s=4.0)
+    return noisereduce.reduce_noise(y=signal, sr=sampleRate, stationary=False, time_constant_s=4.0)
+
 
 # Use librosa to cut off silent sections before and after the voice command
-def trimStage(signal, samplePad=10000, threshold = 25):
-    trimmedSignal, index = librosa.effects.trim(signal, top_db=threshold, frame_length=256, hop_length=64)
+
+
+def trimStage(signal, samplePad=10000, threshold=25):
+    trimmedSignal, index = librosa.effects.trim(
+        signal, top_db=threshold, frame_length=256, hop_length=64)
     # Add constant padding of samples before and after the non-silent indexes
     beginningPadCheck = index[0] - samplePad
     endingPadCheck = index[1] + samplePad
@@ -54,15 +64,21 @@ def trimStage(signal, samplePad=10000, threshold = 25):
     # Return the trimmed signal with padding to prevent slight cutoff in commands
     return signal[beginningIndex:endingIndex]
 
+
 # Use this function for processing if you already have the signal loaded using librosa
+
+
 def processPreloadedAudio(inputSignal, inputSignalSampleRate):
-    highPassedInputSignal = highPassFilterStage(inputSignal, inputSignalSampleRate)
+    highPassedInputSignal = highPassFilterStage(
+        inputSignal, inputSignalSampleRate)
     denoisedSignal = denoiseStage(highPassedInputSignal, inputSignalSampleRate)
     processedSignal = trimStage(denoisedSignal)
     return processedSignal, inputSignalSampleRate
 
+
 def extract_feature(file_name, **kwargs):
 
+    # set features to be extracted
     mfcc = kwargs.get("mfcc")
     chroma = kwargs.get("chroma")
     mel = kwargs.get("mel")
@@ -71,7 +87,7 @@ def extract_feature(file_name, **kwargs):
 
     inputSignal, inputSignalSampleRate = librosa.load(file_name, sr=None)
 
-    #audio processing stages invoked here
+    # audio processing stages invoked here
     X, sample_rate = processPreloadedAudio(inputSignal, inputSignalSampleRate)
 
     if chroma or contrast:
@@ -103,8 +119,8 @@ def extract_feature(file_name, **kwargs):
 
 def load_data(test_size=0.2):
     X, y = [], []
-    for file in glob.glob("ourData/*.wav"):
-        basename = os.path.basename(file)
+    for file in glob.glob(directoryToTrainOver):  # value set at top of file
+        basename = Path.basename(file)
         emotion = basename.split("-")[1]
         if emotion not in AVAILABLE_EMOTIONS:
             continue

@@ -1,8 +1,6 @@
 # Python Emotion Detection and Recognition System With Electron GUI
 
-This project contains a simple electron GUI that allows the user to record .wav files. After they are recorded the emotion in them is classified. The Electron shell contains all the interface and recording features. When the Electron shell finishes recording, it immediatly calls a Python script against the .wav file. This Python scripts extracts features from the audio then classifies the emotion using an artificial nueral net.
-
-## How does it work ( simple representation )
+### This README is a quick guide to get the project up and running locally. For more information please visit our [Wiki](https://github.com/DaltonWemer/emotion-detection-system/wiki)
 
 ```text
 electron
@@ -17,113 +15,54 @@ electron
          |---------------|               |-------------------|
 ```
 
-Essentially no network is being created only one terminal is used when electron is launched and than from 
-within javascript ( electron ) a python program is initiated as a subprocess.
-These two programs than communicate via standart streams.
+This project contains a simple electron GUI that allows the user to record .wav files. After they are recorded the emotion in them is classified. The Electron shell contains all the interface and recording features. When the Electron shell finishes recording, it immediatly calls a Python script against the .wav file. This Python scripts extracts features from the audio then classifies the emotion using an artificial nueral net.
 
-## Electron Installation Guide
 
-1. To download and install [electron](https://electron.atom.io) ( OS X or Linux ) you have to download it from [npm-electron](https://www.npmjs.com/package/electron) using :
-
-   ```
-   npm install electron --save-dev
-   ```
-   ```
-   npm install -g electron
-   ```
-   ( if you don't have npm installed use this [link](https://nodejs.org/en/download/) to download it. )
-
-2. Clone this repository:
-   ```
-   git clone https://github.com/keybraker/electron-GUI-for-python.git
-   ```
 ## Emotion Detection and Recognition System Installation Guide
 
-1. Dowload and install [Python39](https://www.python.org/downloads/)
 
-2. Install [Anaconda](https://www.anaconda.com/products/individual)
+1. To download and install [electron](https://electron.atom.io) ( OS X or Linux ) you have to download it from [npm-electron](https://www.npmjs.com/package/electron) using: 
+   `npm install electron --save-dev` then `npm install -g electron`
+   (if you don't have npm installed use this [link](https://nodejs.org/en/download/) to download it.)
+
+2. If you don't have it alread, install [Python39](https://www.python.org/downloads/). Python3 is used for emotion classification.
+
+3. Install [Anaconda](https://www.anaconda.com/products/individual). Anaconda is an excellent Python3 package manager that will ease the process of installing Python modules and dependencies.
    
-3. install build tools: https://visualstudio.microsoft.com/visual-cpp-build-tools/
+4. Install [Microsoft Visual C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) 
 
-4. restart your computer
+5. At this stage, it is highly reccomended to restart your computer in order to refresh the enviroment.
 
-6. Open administrative powershell and type `pip3 install misaka`
+6. Open an Anaconda Command Line session session and install our first needed Python Module: `pip3 install misaka`
 
-7. type `conda install pyaudio`
+7. Install the pyaudio module using Anaconda: `conda install pyaudio`
 
-8. type `conda install numba`
+8. Install the numba module: `conda install numba`
 
-9. `conda install librosa` 
+9. Install the librosa module: `conda install librosa` 
 
-10. navigate in PowerShell to the docs folder of the project
+10. If you haven't already cloned the project, go ahead and clone it to a known location. Using your elevated PowerShell session navigate to the project's 'docs' folder: `cd emotion_detection_system\docs`. 
 
-11. `conda install --file requirements.txt` if you get errors, try the next step
+11. Use Anaconda to install most of the remaining needed modules by calling on our requirements.txt file: `conda install --file requirements.txt`. If not all modules can be installed, try moving on to step 12.
 
-12. `pip install -r requirements.txt`
+12. Install the remaining modules using Pip: `pip install -r requirements.txt`. If not all modules install, try completing step 11 again, then returning to this step.
 
-13. if you haven't gotten any install errors, naviage to the root of the project
+13. Once all modules listed in requirements.txt have been installed, then we need to install our NodeJS dependencies. From within PowerShell navigate to the root of the project: `cd ..`
 
-14. `python external_programs\classify.py` the console should classify the file in emotion-detection-system\recordings\
-
-15. You should be set to start classifying through the GUI by launching electron as outlined below
+14. Initialize the electron aplication and install any needed NodeJS dependencies: ```npm i```
 
 
 ## Execution Guide
 
-1. Open a terminal window and cd to cloned project
-   ```
-   cd electron-GUI-for-python
-   ```
 
-2. Initialize the elcetron aplication (first-time)
-   ```
-   npm i
-   ```
+1. Open a terminal window to the root of the cloned project: ```cd emotion_detection_system```
 
-3. Run the electron application
-   ```
-   npm start
-   ```
+2. Run the electron application ```npm start```
 
-4. A page should spawn looking as follows:
+4. A page should spawn looking as follows. Click the 'record' button to record an audio clip up to ten seconds long. The application will immediately classify the emotion in the audio then display the classification.
+
 
 ![alt text](../img/currentGUI.png)
 
-1. Press __LAUNCH PROGRAM___ button
-
-   this will launch a python application with a loop inside,
-   that is waiting for data to be send from js
-
-2. Press __INTERACT WITH PROGRAM__ button
-
-   this will send a message named "hello" from js to python
-   and python will read it and print a message
-
-3. Press __TERMINATE PROGRAM__ button
-
-   a termination message ("terminate") is sent to the program which knows
-   to stop the loop and execution
-
-4. Press __HOW TO OPEN A FILE__ button
-
-   from ```electron/gui_example.js``` an ipc.send message is sent to the main.js
-   which will then read and output `config.json` values (fast feature to store settings).
 
 
-[![Python 2 Version](https://img.shields.io/badge/Python-2.7.16-green.svg)](https://www.python.org/downloads/)
-[![Python 3 Version](https://img.shields.io/badge/Python-3.9.1-green.svg)](https://www.python.org/download/releases/3.0/)
-[![Electron Version](https://img.shields.io/badge/electron-v11.1.0-green.svg)](https://electron.atom.io)
-[![OSX Version](https://img.shields.io/badge/OS%20X-v11.0.1-green.svg)](https://www.apple.com/lae/macos/big-sur/)
-[![Ubuntu](https://img.shields.io/badge/Ubuntu-v20.0.4-green.svg)](https://ubuntu.com)
-
-
-# Using the Classification Model as a Developer
-
-It is already trained, you can use `test.py` to test your voice.
-
-You can:
-- Tweak the model parameters ( or the whole model ) in `ser.py`.
-- Add more data to `data` folder in condition that the audio samples are converted to 16000Hz sample rate and mono channel, `convert_wavs.py` does that.
-- Editing the emotions specified in `utils.py` in `AVAILABLE_EMOTIONS` constant.
-
-When you modified anything, you can run `ser.py` to retrain the model.
