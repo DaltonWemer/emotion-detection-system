@@ -45,7 +45,6 @@ if __name__ == "__main__":
         logging.error("~Error: Failed to make prediction\n" + e, exc_info=True)
 
     # show the result !
-    file = open("result.txt", "w")
+    file = open("recordings/result.txt", "w")
     file.write(result)
     file.close()
-    webbrowser.open("result.txt")
