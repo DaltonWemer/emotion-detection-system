@@ -15,6 +15,8 @@ AVAILABLE_EMOTIONS = {
     "sad"
 }
 
+# make it easier to adjust directory paths
+directoryToTrainOver = "ourData/*.wav"
 
 # Using scipy's butterworth filter to highpass frequencies
 
@@ -116,8 +118,8 @@ def extract_feature(file_name, **kwargs):
 
 def load_data(test_size=0.2):
     X, y = [], []
-    for file in glob.glob("ourData/*.wav"):
-        basename = os.path.basename(file)
+    for file in glob.glob(directoryToTrainOver):  # value set at top of file
+        basename = Path.basename(file)
         emotion = basename.split("-")[1]
         if emotion not in AVAILABLE_EMOTIONS:
             continue

@@ -38,11 +38,20 @@ body {
 
 #result-container {
   visibility: hidden;
+  border-radius: 5px;
+  padding: 9px;
+  width: 30%;
+  margin-left: 35%;
+  height: 35px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .result {
   display: inline-block;
   font-size: larger;
+  color: black;
 }
 
 .button:active {
