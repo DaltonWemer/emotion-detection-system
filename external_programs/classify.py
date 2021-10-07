@@ -77,7 +77,7 @@ if __name__ == "__main__":
     # move recording to archive and log run
     try:
         formattedDate = datetime.datetime.now().strftime("%b-%d-%Y_%H-%M-%S")
-        newFilename = "../records/archive/" + formattedDate + ".wav"
+        newFilename = "../records/archive/raw/" + formattedDate + ".wav"
         archivedFilename = os.path.join(dirname, newFilename)
         os.rename(filename, archivedFilename)
         eventLogger.info("Classification Result: " + result +
