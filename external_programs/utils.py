@@ -1,6 +1,7 @@
 import soundfile
 import numpy as np
 import librosa
+import logging
 import glob
 import os
 import noisereduce
@@ -127,3 +128,23 @@ def load_data(test_size=0.2):
         X.append(features)
         y.append(emotion)
     return train_test_split(np.array(X), y, test_size=test_size, random_state=7)
+
+def configure_log():
+
+    logging.basicConfig(filename="recordings/archive/ErrorLog.txt", format="%(asctime)s %(levelname)s Message: %(message)s\n")
+    logger = logging.getLogger(__name__)
+
+    error_handler = logging.FileHandler("recordings/archive/ErrorLog.txt")
+    data_handler = logging.FileHandler("recordings/archive/DataLog.txt")
+
+    data_handler.setLevel(logging.DEBUG)
+    error_handler.setLevel(logging.WARNING)
+
+    data_format = logging.Formatter("Data Formatting Here. %(message)s") #TODO: Modify this to the correct format, and configure a NEW file for each call of classify.py.
+    error_format = logging.Formatter("\n%asctime)s %(levelname)s Message: %(message)s\n")
+
+    data_handler.setFormatter(data_format)
+    error_handler.setFormatter(error_format)
+
+    logger.addHandler(data_handler)
+    logger.addHandler(error_handler)
