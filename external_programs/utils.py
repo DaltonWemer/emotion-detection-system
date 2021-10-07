@@ -89,6 +89,9 @@ def extract_feature(file_name, **kwargs):
     # audio processing stages invoked here
     X, sample_rate = processPreloadedAudio(inputSignal, inputSignalSampleRate)
 
+    # save processed sig
+    soundfile.write("./records/archive/processed/recording.wav", X, sample_rate)
+
     if chroma or contrast:
         stft = np.abs(librosa.stft(X))
         result = np.array([])
