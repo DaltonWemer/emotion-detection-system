@@ -10,7 +10,6 @@ from utils import extract_feature
 # Setup Logging
 formatter = logging.Formatter("\n\n%(asctime)s\n%(message)s")
 
-
 def setup_logger(name, log_file, level=logging.INFO):
 
     handler = logging.FileHandler(log_file)
@@ -35,10 +34,11 @@ if __name__ == "__main__":
     # load the saved model (after training)
     try:
         model = pickle.load(
-            open("./external_programs/result/mlp_classifier.model", "rb"))
+        open("./external_programs/result/mlp_classifier.model", "rb"))
     except Exception as e:
         errorLogger.error(
             "~Failed to load classifier model\n" + str(e), exc_info=True)
+        exit()
 
     try:
         dirname = os.path.dirname(__file__)
@@ -46,6 +46,7 @@ if __name__ == "__main__":
     except Exception as e:
         errorLogger.error(
             "~Failed to join recording path\n" + str(e), exc_info=True)
+        exit()
 
     # extract features and reshape it
     try:
@@ -53,6 +54,7 @@ if __name__ == "__main__":
             filename, mfcc=True, chroma=True, mel=True).reshape(1, -1)
     except Exception as e:
         errorLogger.error("~Failed to process audio\n" + str(e), exc_info=True)
+        exit()
 
     # predict
     try:
@@ -60,6 +62,7 @@ if __name__ == "__main__":
     except Exception as e:
         errorLogger.error("~Failed to make prediction\n" +
                           str(e), exc_info=True)
+        exit()
 
     # write the result for reading by electron
     try:
@@ -69,6 +72,7 @@ if __name__ == "__main__":
     except Exception as e:
         errorLogger.error(
             "~Failed to write classification result to file\n" + str(e), exc_info=True)
+        exit()
 
     # move recording to archive and log run
     try:
