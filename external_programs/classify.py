@@ -3,6 +3,7 @@ import logging
 import pickle
 import datetime
 import soundfile as sf
+import librosa
 from array import array
 from struct import pack
 from sklearn.neural_network import MLPClassifier
@@ -108,12 +109,21 @@ if __name__ == "__main__":
         # classificationTime = datetime.timedelta(startTime, endTime)
         delta = endTime - startTime
         # delta = endTime - datetime.timedelta(delta)
+
+        y, sr = librosa.load("./records/archive/raw/" + formattedDate + "-raw.wav")
+        rawDur = librosa.get_duration(y=y, sr=sr)
+
+        y1, sr1 = librosa.load("./records/archive/processed/" + formattedDate + "-processed.wav")
+        procDur = librosa.get_duration(y=y1, sr=sr1)
+
         file = open(logname, "a+")
         file.write("Classification Date and Time: " + formattedDate + 
                 "\nClassification Result: " + result + 
-                "\nTime to Process: " + str(delta.total_seconds() * 1000) + " milliseconds" +
+                "\nTime to Process: " + str(delta.total_seconds()) + " seconds" +
                 "\nRaw Recording: " + "records/archive/raw/" + formattedDate + "-raw.wav" +
                 "\nProcessed Recording: " + "records/archive/processed/" + formattedDate + "-processed.wav" +
+                "\nRaw recording Length: " + str(rawDur) + " seconds" +
+                "\nProcessed Recording Length: " + str(procDur) + " seconds" +
                 "\nClassifier Model Data: " + 
                 "\nAlpha Value:\t" + str(model.alpha) +
                 "\nBatch Size:\t" + str(model.batch_size) +
