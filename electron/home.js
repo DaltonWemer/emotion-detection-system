@@ -4,28 +4,32 @@ var lottie = require('lottie-web');
 const openExplorer = require('open-file-explorer');
 let { Readable } = require('stream');
 const fs = require('fs');
-
-const errOutput = fs.createWriteStream("records/errors.log", {flags: 'a'});
-const normOutput = fs.createWriteStream("records/events.log", {flags: 'a'});
-
 const SimpleDateFormat = require('@riversun/simple-date-format');
 const path = require('path');
-
-const { Console } = require("console"); // Get Console class
-const dataLogger = new Console(normOutput, errOutput); // create error Logger
 
 // const exec = require('child_process').exec;
 const exec = require('child_process').exec;
 
-var nodeConsole = require('console');
-var my_console = new nodeConsole.Console(process.stdout, process.stderr);
-var child;
-var audioInputSelect;
-
+// Paths
+const event_log_path = path.normalize('records/events.log');
+const error_log_path = path.normalize('records/errors.log');
 const open_file_path = path.normalize('./records');
 const audio_recording_path = path.normalize('./records/recording.wav');
 const result_path = path.normalize('./records/result.txt');
 const audio_archive_path = path.normalize('./records/archive/');
+
+// Setup Logging
+const errOutput = fs.createWriteStream(error_log_path, {flags: 'a'});
+const normOutput = fs.createWriteStream(event_log_path, {flags: 'a'});
+const { Console } = require("console"); // Get Console class
+const dataLogger = new Console(normOutput, errOutput); // create error Logger
+
+var nodeConsole = require('console');
+var my_console = new nodeConsole.Console(process.stdout, process.stderr);
+
+//Global Vars
+var child;
+var audioInputSelect;
 
 window.onload = function () {
     // Load our recording animation into memory
@@ -57,6 +61,19 @@ window.onload = function () {
         })
 
     watchForAndDisplayResult();
+    watchForError();
+}
+
+async function watchForError() {
+    fs.watch(error_log_path, (eventType, filename) => {
+        console.log("123")
+        if (eventType == 'change') {
+            console.log("I am here");
+            document.getElementById("result").innerHTML = "error, check logs";
+            document.getElementById("result-container").style.visibility = "visible";
+            document.getElementById("result-container").style.backgroundColor = "#EE4B2B";
+        }
+    });
 }
 
 async function watchForAndDisplayResult() {
