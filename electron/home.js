@@ -4,8 +4,10 @@ var lottie = require('lottie-web');
 const openExplorer = require('open-file-explorer');
 let { Readable } = require('stream');
 const fs = require('fs');
-const errOutput = fs.createWriteStream("recordings/archive/ErrorLog.txt", {flags: 'a'});
-const normOutput = fs.createWriteStream("recordings/archive/DataLog.txt", {flags: 'a'});
+
+const errOutput = fs.createWriteStream("records/errors.log", {flags: 'a'});
+const normOutput = fs.createWriteStream("records/events.log", {flags: 'a'});
+
 const SimpleDateFormat = require('@riversun/simple-date-format');
 const path = require('path');
 
@@ -92,11 +94,11 @@ function print_both(str) {
 }
 
 function log_error(str) {
-    dataLogger.error("Error: " + str);
+    dataLogger.error("\n\r\n\rError: " + str);
 }
 
 function log_data(str) {
-    dataLogger.log(str);
+    dataLogger.log("\n\r\n\r" + str);
 }
 
 function send_to_program(str) {
@@ -224,12 +226,6 @@ async function startRecording() {
     function onMediaError(e) {
         console.error('media error', e);
     }
-}
-
-function delayInMilliseconds() {
-    setTimeout(function () {
-        return;
-    }, delayInMilliseconds);
 }
 
 function bufferToStream(buffer) {
