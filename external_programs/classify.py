@@ -90,6 +90,23 @@ if __name__ == "__main__":
 
         eventLogger.info("Classification Result: " + result +
                          "\nArchived File Name: " + formattedDate + ".wav")
+                         
     except Exception as e:
         errorLogger.error(
             "~Failed to archive recording\n" + str(e), exc_info=True)
+        exit()
+    
+    # Create successful log
+    try:
+        filename = os.path.join(dirname, '../records/archive/result_logs/' + formattedDate + '.txt')
+        file = open(filename, "a+")
+        file.write("Classification Date and Time: " + formattedDate + 
+                "\nClassification Result: " + result + 
+                "\nRaw Recording: " + "records/archive/raw/" + formattedDate + ".wav" +
+                "\nProcessed Recording: " + "records/archive/processed/" + formattedDate + ".wav")
+        file.close()
+        eventLogger.info("\nSpecific classification log: result_logs/" +  formattedDate + ".txt")
+        
+    except Exception as e:
+        errorLogger.error("~Failed to create a log for successful classification\n" + str(e), exc_info=True)
+        exit()
