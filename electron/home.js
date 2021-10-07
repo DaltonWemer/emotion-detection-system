@@ -66,9 +66,7 @@ window.onload = function () {
 
 async function watchForError() {
     fs.watch(error_log_path, (eventType, filename) => {
-        console.log("123")
         if (eventType == 'change') {
-            console.log("I am here");
             document.getElementById("result").innerHTML = "error, check logs";
             document.getElementById("result-container").style.visibility = "visible";
             document.getElementById("result-container").style.backgroundColor = "#EE4B2B";
