@@ -2,6 +2,7 @@ import os
 import logging
 import pickle
 import datetime
+import soundfile as sf
 from array import array
 from struct import pack
 from sklearn.neural_network import MLPClassifier
@@ -43,6 +44,7 @@ if __name__ == "__main__":
     try:
         dirname = os.path.dirname(__file__)
         filename = os.path.join(dirname, '../records/recording.wav')
+        PRfilename = os.path.join(dirname, '../records/archive/processed/recording.wav')
     except Exception as e:
         errorLogger.error(
             "~Failed to join recording path\n" + str(e), exc_info=True)
@@ -50,8 +52,7 @@ if __name__ == "__main__":
 
     # extract features and reshape it
     try:
-        features = extract_feature(
-            filename, mfcc=True, chroma=True, mel=True).reshape(1, -1)
+        features = extract_feature(filename, mfcc=True, chroma=True, mel=True).reshape(1, -1)
     except Exception as e:
         errorLogger.error("~Failed to process audio\n" + str(e), exc_info=True)
         exit()
@@ -74,12 +75,19 @@ if __name__ == "__main__":
             "~Failed to write classification result to file\n" + str(e), exc_info=True)
         exit()
 
-    # move recording to archive and log run
+    # move recording to archive/raw and log run
+    # rename processed recording in archive/processed
     try:
         formattedDate = datetime.datetime.now().strftime("%b-%d-%Y_%H-%M-%S")
-        newFilename = "../records/archive/raw/" + formattedDate + ".wav"
+
+        newFilename = "../records/archive/raw/" + formattedDate + "-raw.wav"
+        newPRFilename = "../records/archive/processed/" + formattedDate + "-processed.wav"
+
         archivedFilename = os.path.join(dirname, newFilename)
+        processedFilename = os.path.join(dirname, newPRFilename)
         os.rename(filename, archivedFilename)
+        os.rename(PRfilename, processedFilename)
+
         eventLogger.info("Classification Result: " + result +
                          "\nArchived File Name: " + formattedDate + ".wav")
     except Exception as e:
