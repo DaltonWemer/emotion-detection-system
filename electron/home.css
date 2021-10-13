@@ -121,3 +121,38 @@ h1 { font-size: 40px }
     }
   }
 }
+
+.emotion-animation {
+  height: 100px;
+  width: 100px;
+}
+
+#sad-result-container{
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+#happy-result-container{
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+#fearful-result-container{
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+#normal-result-container{
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+#angry-result-container{
+  display: none;
+  align-items: center;
+  justify-content: center;
+}

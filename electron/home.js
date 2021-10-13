@@ -62,6 +62,55 @@ window.onload = function () {
 
     watchForAndDisplayResult();
     watchForError();
+    loadAllAnimations();
+}
+
+function loadAllAnimations(){
+    // Load Sad Animation
+    lottie.loadAnimation({
+        container: document.getElementById('sad-animation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'img/sad.json'
+    })
+
+    // Load Anger Animation
+    lottie.loadAnimation({
+        container: document.getElementById('angry-animation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'img/angry.json'
+    })
+
+    // Load Happy Animation
+    lottie.loadAnimation({
+        container: document.getElementById('happy-animation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'img/happy.json'
+    })
+
+    // Load Normal Animation
+    lottie.loadAnimation({
+        container: document.getElementById('normal-animation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'img/normal.json'
+    })
+
+     // Load Fearful Animation
+     lottie.loadAnimation({
+        container: document.getElementById('fearful-animation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'img/fearful.json'
+    })
+
 }
 
 async function watchForError() {
@@ -78,23 +127,23 @@ async function watchForAndDisplayResult() {
     fs.watch(result_path, (eventType, filename) => {
         if (eventType == 'change') {
             let fileContents = fs.readFileSync(result_path, { encoding: 'utf-8' });
-            document.getElementById("result").innerHTML = fileContents;
-            document.getElementById("result-container").style.visibility = "visible";
+            // document.getElementById("result").innerHTML = fileContents;
+            // document.getElementById("result-container").style.visibility = "visible";
             switch (fileContents) {
                 case "anger":
-                    document.getElementById("result-container").style.backgroundColor = "#d62d20";
+                    document.getElementById("anger-result-container").style.display = 'flex';
                     break;
                 case "happy":
-                    document.getElementById("result-container").style.backgroundColor = "#ffa700";
+                    document.getElementById("happy-result-container").style.display = 'flex';
                     break;
                 case "fearful":
-                    document.getElementById("result-container").style.backgroundColor = "#962fbf";
+                    document.getElementById("fearful-result-container").style.display = 'flex';
                     break;
                 case "normal":
-                    document.getElementById("result-container").style.backgroundColor = "#ffffff";
+                    document.getElementById("normal-result-container").style.display = 'flex';
                     break;
                 case "sad":
-                    document.getElementById("result-container").style.backgroundColor = "#0057e7";
+                    document.getElementById("sad-result-container").style.display = 'flex';
                     break;
                 default:
                     document.getElementById("result-container").style.backgroundColor = "#111111";
@@ -185,7 +234,14 @@ async function startRecording() {
 
     //Plays audio alerting the user that the recording has started
     var audio = new Audio('./img/retone.mp3');
-    document.getElementById("result-container").style.visibility = "hidden";
+
+    // Hide all possible results
+    document.getElementById("sad-result-container").style.display = 'none';
+    document.getElementById("angry-result-container").style.display = 'none';
+    document.getElementById("fearful-result-container").style.display = 'none';
+    document.getElementById("normal-result-container").style.display = 'none';
+    document.getElementById("happy-result-container").style.display = 'none';
+
     audio.play();
     await sleep(400); //audio clip is 360 milliseconds
     // Filter out webcams from our media and choose mic
