@@ -3,6 +3,7 @@ import numpy as np
 import librosa
 import glob
 import os
+import pathlib
 import noisereduce
 from scipy import signal as sg
 from sklearn.model_selection import train_test_split
@@ -16,7 +17,7 @@ AVAILABLE_EMOTIONS = {
 }
 
 # make it easier to adjust directory paths
-directoryToTrainOver = "ourData/*.wav"
+directoryToTrainOver = "../../dataToTrainOver/*.wav"
 
 # Using scipy's butterworth filter to highpass frequencies
 

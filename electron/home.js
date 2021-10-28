@@ -19,8 +19,8 @@ const result_path = path.normalize('./records/result.txt');
 const audio_archive_path = path.normalize('./records/archive/');
 
 // Setup Logging
-const errOutput = fs.createWriteStream(error_log_path, {flags: 'a'});
-const normOutput = fs.createWriteStream(event_log_path, {flags: 'a'});
+const errOutput = fs.createWriteStream(error_log_path, { flags: 'a' });
+const normOutput = fs.createWriteStream(event_log_path, { flags: 'a' });
 const { Console } = require("console"); // Get Console class
 const dataLogger = new Console(normOutput, errOutput); // create error Logger
 

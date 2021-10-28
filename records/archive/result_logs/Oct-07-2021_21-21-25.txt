@@ -1,0 +1,13 @@
+Classification Date and Time: Oct-07-2021_21-21-25
+Classification Result: anger
+Time to Process: 0.189999 seconds
+Raw Recording: records/archive/raw/Oct-07-2021_21-21-25-raw.wav
+Processed Recording: records/archive/processed/Oct-07-2021_21-21-25-processed.wav
+Raw recording Length: 2.461315192743764 seconds
+Processed Recording Length: 1.5100226757369615 seconds
+Classifier Model Data: 
+Alpha Value:	0.0001
+Batch Size:	256
+Hidden Layer Sizes:	(500, 100)
+Learning Rate:	adaptive
+Max Iterations:	500

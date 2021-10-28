@@ -1,0 +1,13 @@
+Classification Date and Time: Oct-09-2021_12-55-59
+Classification Result: fearful
+Time to Process: 0.362932 seconds
+Raw Recording: records/archive/raw/Oct-09-2021_12-55-59-raw.wav
+Processed Recording: records/archive/processed/Oct-09-2021_12-55-59-processed.wav
+Raw recording Length: 9.102222222222222 seconds
+Processed Recording Length: 3.739138321995465 seconds
+Classifier Model Data: 
+Alpha Value:	0.0001
+Batch Size:	256
+Hidden Layer Sizes:	300
+Learning Rate:	adaptive
+Max Iterations:	10

@@ -5,19 +5,19 @@ from utils import load_data
 import os
 import pickle
 
-X_train, X_test, y_train, y_test = load_data(test_size=0.25)
+X_train, X_test, y_train, y_test = load_data(test_size=0.15)
 print("[+] Number of training samples:", X_train.shape[0])
 print("[+] Number of testing samples:", X_test.shape[0])
 print("[+] Number of features:", X_train.shape[1])
 '''
 Previous params before grid search:
 model_params = {
-    'alpha': 0.001,
+    'alpha': 0.0001,
     'batch_size': 256,
     'epsilon': 1e-08,
-    'hidden_layer_sizes': (500, 200, 300, 100, 400),
+    'hidden_layer_sizes': (300),
     'learning_rate': 'adaptive',
-    'max_iter': 50000,
+    'max_iter': 10,
 }
 
 model = MLPClassifier(**model_params)
