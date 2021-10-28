@@ -90,7 +90,7 @@ def extract_feature(file_name, **kwargs):
     X, sample_rate = processPreloadedAudio(inputSignal, inputSignalSampleRate)
 
     # save processed sig
-    soundfile.write("../records/archive/processed/recording.wav", X, sample_rate)
+    soundfile.write("./records/archive/processed/recording.wav", X, sample_rate)
 
     if chroma or contrast:
         stft = np.abs(librosa.stft(X))
@@ -122,7 +122,7 @@ def extract_feature(file_name, **kwargs):
 def load_data(test_size=0.2):
     X, y = [], []
     for file in glob.glob(directoryToTrainOver):  # value set at top of file
-        basename = os.path.basename(file)
+        basename = Path.basename(file)
         emotion = basename.split("-")[1]
         if emotion not in AVAILABLE_EMOTIONS:
             continue
