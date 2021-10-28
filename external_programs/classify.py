@@ -46,6 +46,7 @@ if __name__ == "__main__":
 
     try:
         dirname = os.path.dirname(__file__)
+        print(dirname)
         filename = os.path.join(dirname, '../records/recording.wav')
         PRfilename = os.path.join(dirname, '../records/archive/processed/recording.wav')
     except Exception as e:

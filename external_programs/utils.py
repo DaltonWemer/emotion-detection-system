@@ -122,9 +122,12 @@ def extract_feature(file_name, **kwargs):
 
 def load_data(test_size=0.2):
     X, y = [], []
+    i = 0
     for file in glob.glob(directoryToTrainOver):  # value set at top of file
+        i = i + 1
         basename = os.path.basename(file)
         emotion = basename.split("-")[1]
+        print("loading data " + str(i))
         if emotion not in AVAILABLE_EMOTIONS:
             continue
         features = extract_feature(file, mfcc=True, chroma=True, mel=True)

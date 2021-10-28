@@ -1,14 +1,18 @@
 from scipy.signal.filter_design import EPSILON
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
+from sklearn.model_selection import GridSearchCV
 from utils import load_data
 import os
 import pickle
+
+print("hello world")
 
 X_train, X_test, y_train, y_test = load_data(test_size=0.15)
 print("[+] Number of training samples:", X_train.shape[0])
 print("[+] Number of testing samples:", X_test.shape[0])
 print("[+] Number of features:", X_train.shape[1])
+
 '''
 Previous params before grid search:
 model_params = {
@@ -22,16 +26,16 @@ model_params = {
 
 model = MLPClassifier(**model_params)
 '''
-mlp_gs = MLPClassifier(max_iter=50000)
+mlp_gs = MLPClassifier(max_iter=1000)
+
 parameter_space = {
-    'hidden_layer_sizes': [(10,30,10),(20,),(1,1,1,1,1)],
+    'hidden_layer_sizes': [(50,50,50), (50,100,50), (100,)],
     'activation': ['tanh', 'relu'],
-    'solver': ['adam'],
-    'epsilon':[1e-08, 1e-04, 1],
-    'alpha': [0.0001, 0.05, 0.1],
+    'solver': ['sgd', 'adam'],
+    'alpha': [0.0001, 0.05],
     'learning_rate': ['constant','adaptive'],
 }
-from sklearn.model_selection import GridSearchCV
+
 print("[*] Training the model...")
 model = GridSearchCV(mlp_gs, parameter_space, n_jobs=-1, cv=5)
 model.fit(X_train, y_train) # X is train samples and y is the corresponding labels

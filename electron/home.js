@@ -205,7 +205,6 @@ async function startRecording() {
 
         mediaRecorder.mimeType = 'audio/wav'; // check this line for audio/wav
         mediaRecorder.audioChannels = 1;
-        mediaRecorder.sampleRate = 44100;
 
         document.getElementById("recordingAnimation").style.display = "block";
         isRecording = true;
