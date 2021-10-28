@@ -42,6 +42,16 @@ window.onload = function () {
     })
     document.getElementById("recordingAnimation").style.display = "none"
 
+    lottie.loadAnimation({
+        container: document.getElementById('loadingAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'img/processing.json'
+    })
+
+    document.getElementById("loadingAnimation").style.display = "none"
+
     //Create select options for mics on system
     navigator.mediaDevices.getUserMedia({ audio: true });
     navigator.mediaDevices.enumerateDevices()
@@ -116,9 +126,10 @@ function loadAllAnimations(){
 async function watchForError() {
     fs.watch(error_log_path, (eventType, filename) => {
         if (eventType == 'change') {
-            document.getElementById("result").innerHTML = "error, check logs";
-            document.getElementById("result-container").style.visibility = "visible";
-            document.getElementById("result-container").style.backgroundColor = "#EE4B2B";
+            document.getElementById("loadingAnimation").style.display = "none"
+            // document.getElementById("result").innerHTML = "error, check logs";
+            // document.getElementById("result-container").style.visibility = "visible";
+            // document.getElementById("result-container").style.backgroundColor = "#EE4B2B";
         }
     });
 }
@@ -126,6 +137,7 @@ async function watchForError() {
 async function watchForAndDisplayResult() {
     fs.watch(result_path, (eventType, filename) => {
         if (eventType == 'change') {
+            document.getElementById("loadingAnimation").style.display = "none"
             let fileContents = fs.readFileSync(result_path, { encoding: 'utf-8' });
             // document.getElementById("result").innerHTML = fileContents;
             // document.getElementById("result-container").style.visibility = "visible";
@@ -229,9 +241,34 @@ const sleep = (milliseconds) => {
 
 let chunks = []
 isRecording = false
+var countDownDate = new Date();
+countDownDate.setSeconds(countDownDate.getSeconds() + 5);
+
+
 
 async function startRecording() {
 
+    var x = setInterval(function() {
+        // Get today's date and time
+        var now = new Date().getTime();
+          
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+          
+        // Time calculations for days, hours, minutes and seconds
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          
+        // Output the result in an element with id="demo"
+        document.getElementsByClassName("timer").innerHTML = seconds
+        console.log(seconds)
+          
+        // If the count down is over, write some text 
+        if (distance < 0) {
+          clearInterval(x);
+        //   document.getElementById("demo").innerHTML = "EXPIRED";
+        }
+      }, 1000);
+    
     //Plays audio alerting the user that the recording has started
     var audio = new Audio('./img/retone.mp3');
 
@@ -285,11 +322,14 @@ async function startRecording() {
         // Recorder is in miliseconds 
         mediaRecorder.start(5 * 1000);
 
+    
+
         // mediaRecorder.onstop = function() {
         //     mediaRecorder.save();
         // };
 
         function stopRecording() {
+            document.getElementById("loadingAnimation").style.display = "block"
             mediaRecorder.stop();
         }
     }
