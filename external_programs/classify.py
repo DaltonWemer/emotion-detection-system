@@ -60,7 +60,7 @@ if __name__ == "__main__":
         errorLogger.error("~Failed to process audio\n" + str(e), exc_info=True)
         exit()
 
-    # predict    soundfile.write("../records/archive/processed/recording.wav", X, sample_rate)
+    # predict 
     try:
         result = model.predict(features)[0]
         
