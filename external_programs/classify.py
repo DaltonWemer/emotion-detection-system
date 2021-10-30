@@ -60,7 +60,7 @@ if __name__ == "__main__":
         errorLogger.error("~Failed to process audio\n" + str(e), exc_info=True)
         exit()
 
-    # predict
+    # predict 
     try:
         result = model.predict(features)[0]
         
@@ -123,13 +123,13 @@ if __name__ == "__main__":
                 "\nRaw Recording: " + "records/archive/raw/" + formattedDate + "-raw.wav" +
                 "\nProcessed Recording: " + "records/archive/processed/" + formattedDate + "-processed.wav" +
                 "\nRaw recording Length: " + str(rawDur) + " seconds" +
-                "\nProcessed Recording Length: " + str(procDur) + " seconds" +
-                "\nClassifier Model Data: " + 
-                "\nAlpha Value:\t" + str(model.alpha) +
-                "\nBatch Size:\t" + str(model.batch_size) +
-                "\nHidden Layer Sizes:\t" + str(model.hidden_layer_sizes) + 
-                "\nLearning Rate:\t" + str(model.learning_rate) + 
-                "\nMax Iterations:\t" + str(model.max_iter)) 
+                "\nProcessed Recording Length: " + str(procDur) + " seconds")
+                #"\nClassifier Model Data: " +
+                #"\nAlpha Value:\t" + str(model.alpha) +
+                #"\nBatch Size:\t" + str(model.batch_size) +
+                #"\nHidden Layer Sizes:\t" + str(model.hidden_layer_sizes) +
+                #"\nLearning Rate:\t" + str(model.learning_rate) +
+                #"\nMax Iterations:\t" + str(model.max_iter))
         file.close()
         eventLogger.info("\nSpecific classification log: result_logs/" +  formattedDate + ".txt")
         
