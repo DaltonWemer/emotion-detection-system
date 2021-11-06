@@ -47,21 +47,21 @@ print("Accuracy: {:.2f}%".format(accuracy*100))
 if not os.path.isdir("result"):
     os.mkdir("result")
 
-pickle.dump(model, open("result/mlp_classifier.model", "wb"))
+pickle.dump(model, open("external_programs/result/mlp_classifier.model", "wb"))
 
 confusion_matrix = confusion_matrix(y_true=y_test, y_pred=y_pred)
 disp = ConfusionMatrixDisplay(confusion_matrix=confusion_matrix, display_labels=model.classes_)
 disp.plot()
-plt.savefig("result/confusion_matrix.jpg")
+plt.savefig("external_programs/result/confusion_matrix.jpg")
 
-f= open("result/classification_report.txt","w+")
+f= open("external_programs/result/classification_report.txt","w+")
 f.write(classification_report(y_true=y_test, y_pred=y_pred))
 f.close()
 
-f = open("result/best_parameters.txt","w+")
+f = open("external_programs/result/best_parameters.txt","w+")
 f.write(str(model.best_params_))
 f.close()
 
-f = open("result/accuracy.txt","w+")
+f = open("external_programs/result/accuracy.txt","w+")
 f.write(str(accuracy))
 f.close()
