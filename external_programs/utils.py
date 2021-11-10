@@ -4,6 +4,7 @@ import librosa
 import logging
 import glob
 import os
+from pydub import AudioSegment
 import noisereduce
 from scipy import signal as sg
 from sklearn.model_selection import train_test_split
@@ -64,11 +65,13 @@ def trimStage(signal, samplePad=10000, threshold=25):
     # Return the trimmed signal with padding to prevent slight cutoff in commands
     return signal[beginningIndex:endingIndex]
 
+def match_target_amplitude(inputSignal, target_dBFS):
+    change_in_dBFS = target_dBFS - inputSignal.dBFS
+    return inputSignal.apply_gain(change_in_dBFS)
 
 # Use this function for processing if you already have the signal loaded using librosa
-
-
 def processPreloadedAudio(inputSignal, inputSignalSampleRate):
+    inputSignal = match_target_amplitude(inputSignal, -20.0)
     highPassedInputSignal = highPassFilterStage(
         inputSignal, inputSignalSampleRate)
     denoisedSignal = denoiseStage(highPassedInputSignal, inputSignalSampleRate)
@@ -133,7 +136,6 @@ def load_data(test_size=0.2):
     return train_test_split(np.array(X), y, test_size=test_size, random_state=7)
 
 def configure_log():
-
     logging.basicConfig(filename="recordings/archive/ErrorLog.txt", format="%(asctime)s %(levelname)s Message: %(message)s\n")
     logger = logging.getLogger(__name__)
 
