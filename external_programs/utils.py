@@ -9,7 +9,7 @@ from scipy import signal as sg
 from sklearn.model_selection import train_test_split
 
 AVAILABLE_EMOTIONS = {
-    "anger",
+    "angry",
     "fearful",
     "happy",
     "normal",
@@ -90,6 +90,9 @@ def extract_feature(file_name, **kwargs):
     # audio processing stages invoked here
     X, sample_rate = processPreloadedAudio(inputSignal, inputSignalSampleRate)
 
+    # save processed sig
+    soundfile.write("./records/archive/processed/recording.wav", X, sample_rate)
+
     if chroma or contrast:
         stft = np.abs(librosa.stft(X))
         result = np.array([])
@@ -120,7 +123,7 @@ def extract_feature(file_name, **kwargs):
 def load_data(test_size=0.2):
     X, y = [], []
     for file in glob.glob(directoryToTrainOver):  # value set at top of file
-        basename = Path.basename(file)
+        basename = os.path.basename(file)
         emotion = basename.split("-")[1]
         if emotion not in AVAILABLE_EMOTIONS:
             continue

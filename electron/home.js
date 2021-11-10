@@ -10,15 +10,26 @@ const path = require('path');
 // const exec = require('child_process').exec;
 const exec = require('child_process').exec;
 
-var nodeConsole = require('console');
-var my_console = new nodeConsole.Console(process.stdout, process.stderr);
-var child;
-var audioInputSelect;
-
+// Paths
+const event_log_path = path.normalize('records/events.log');
+const error_log_path = path.normalize('records/errors.log');
 const open_file_path = path.normalize('./records');
 const audio_recording_path = path.normalize('./records/recording.wav');
 const result_path = path.normalize('./records/result.txt');
 const audio_archive_path = path.normalize('./records/archive/');
+
+// Setup Logging
+const errOutput = fs.createWriteStream(error_log_path, {flags: 'a'});
+const normOutput = fs.createWriteStream(event_log_path, {flags: 'a'});
+const { Console } = require("console"); // Get Console class
+const dataLogger = new Console(normOutput, errOutput); // create error Logger
+
+var nodeConsole = require('console');
+var my_console = new nodeConsole.Console(process.stdout, process.stderr);
+
+//Global Vars
+var child;
+var audioInputSelect;
 
 window.onload = function () {
     // Load our recording animation into memory
@@ -50,6 +61,17 @@ window.onload = function () {
         })
 
     watchForAndDisplayResult();
+    watchForError();
+}
+
+async function watchForError() {
+    fs.watch(error_log_path, (eventType, filename) => {
+        if (eventType == 'change') {
+            document.getElementById("result").innerHTML = "error, check logs";
+            document.getElementById("result-container").style.visibility = "visible";
+            document.getElementById("result-container").style.backgroundColor = "#EE4B2B";
+        }
+    });
 }
 
 async function watchForAndDisplayResult() {
@@ -84,7 +106,14 @@ async function watchForAndDisplayResult() {
 
 function print_both(str) {
     console.log('Javascript: ' + str);
-    my_console.log('Javascript: ' + str);
+}
+
+function log_error(str) {
+    dataLogger.error("\n\r\n\rError: " + str);
+}
+
+function log_data(str) {
+    dataLogger.log("\n\r\n\r" + str);
 }
 
 function send_to_program(str) {
@@ -97,9 +126,11 @@ function send_to_program(str) {
 // starts program execution from within javascript and
 function start_code_function(evt) {
     print_both('Initiating program');
+    log_data("Recording in progress");
     child = exec("python ./external_programs/classify.py", function (error, stdout, stderr) {
         if (error !== null) {
             print_both('exec error: ' + error);
+            log_error("ELECTRON ERROR: Error executing classify.py: " + error);
         }
     });
 
@@ -135,7 +166,7 @@ function open_file_function(evt) {
 
     openExplorer(path, err => {
         if (err) {
-            console.log(err);
+            log_error("ELECTRON: Error requesting OS to open a file explorer to recording archive: " + err);
         }
         else {
             //Do Something
@@ -174,7 +205,7 @@ async function startRecording() {
 
         mediaRecorder.mimeType = 'audio/wav'; // check this line for audio/wav
         mediaRecorder.audioChannels = 1;
-        mediaRecorder.sampleRate = 44100;
+        mediaRecorder.sampleRate = 48000;
 
         document.getElementById("recordingAnimation").style.display = "block";
         isRecording = true;
@@ -210,12 +241,6 @@ async function startRecording() {
     function onMediaError(e) {
         console.error('media error', e);
     }
-}
-
-function delayInMilliseconds() {
-    setTimeout(function () {
-        return;
-    }, delayInMilliseconds);
 }
 
 function bufferToStream(buffer) {
