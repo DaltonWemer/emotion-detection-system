@@ -4,6 +4,7 @@ from sklearn.metrics import accuracy_score, ConfusionMatrixDisplay, classificati
 from sklearn.metrics import confusion_matrix
 from utils import load_data
 import matplotlib.pyplot as plt
+from sklearn.model_selection import StratifiedShuffleSplit
 
 import os
 import pickle
@@ -27,16 +28,19 @@ model = MLPClassifier(**model_params)
 '''
 mlp_gs = MLPClassifier(max_iter=50000)
 parameter_space = {
-    'hidden_layer_sizes': [(35,),(50,),(20)],
-    'activation': ['tanh', 'relu'],
+    'hidden_layer_sizes': [(50,),(55,),(60,)],
+    'activation': ['tanh'],
     'solver': ['adam'],
-    'epsilon':[1e-08, 1e-04, 1],
-    'alpha': [0.0001, 0.05, 0.1],
-    'learning_rate': ['constant','adaptive'],
+    'epsilon':[1e-08],
+    'alpha': [0.0001],
+    'learning_rate': ['constant'],
 }
+
 from sklearn.model_selection import GridSearchCV
 print("[*] Training the model...")
-model = GridSearchCV(mlp_gs, parameter_space, n_jobs=-1, cv=5)
+
+sss = StratifiedShuffleSplit(n_splits=5, test_size=0.25, random_state=0)
+model = GridSearchCV(mlp_gs, parameter_space, n_jobs=-1, cv=sss)
 model.fit(X_train, y_train) # X is train samples and y is the corresponding labels
 
 print('Best parameters found: ', model.best_params_)

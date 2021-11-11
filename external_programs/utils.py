@@ -65,13 +65,13 @@ def trimStage(signal, samplePad=10000, threshold=25):
     # Return the trimmed signal with padding to prevent slight cutoff in commands
     return signal[beginningIndex:endingIndex]
 
-def match_target_amplitude(inputSignal, target_dBFS):
+def normalizeVolStage(inputSignal, target_dBFS):
     change_in_dBFS = target_dBFS - inputSignal.dBFS
     return inputSignal.apply_gain(change_in_dBFS)
 
 # Use this function for processing if you already have the signal loaded using librosa
 def processPreloadedAudio(inputSignal, inputSignalSampleRate):
-    inputSignal = match_target_amplitude(inputSignal, -20.0)
+    inputSignal = normalizeVolStage(inputSignal, -20.0)
     highPassedInputSignal = highPassFilterStage(
         inputSignal, inputSignalSampleRate)
     denoisedSignal = denoiseStage(highPassedInputSignal, inputSignalSampleRate)
