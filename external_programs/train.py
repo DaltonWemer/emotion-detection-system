@@ -5,6 +5,7 @@ from sklearn.metrics import confusion_matrix
 from utils import load_data
 import matplotlib.pyplot as plt
 from sklearn.model_selection import StratifiedShuffleSplit
+from sklearn.model_selection import GridSearchCV
 
 import os
 import pickle
@@ -36,10 +37,9 @@ parameter_space = {
     'learning_rate': ['constant'],
 }
 
-from sklearn.model_selection import GridSearchCV
 print("[*] Training the model...")
 
-sss = StratifiedShuffleSplit(n_splits=5, test_size=0.25, random_state=0)
+sss = StratifiedShuffleSplit(n_splits=5, test_size=0.25, random_state=42)
 model = GridSearchCV(mlp_gs, parameter_space, n_jobs=-1, cv=sss)
 model.fit(X_train, y_train) # X is train samples and y is the corresponding labels
 

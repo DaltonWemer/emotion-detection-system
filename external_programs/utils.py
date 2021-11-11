@@ -4,7 +4,7 @@ import librosa
 import logging
 import glob
 import os
-from pydub import AudioSegment
+from pydub import AudioSegment, effects 
 import noisereduce
 from scipy import signal as sg
 from sklearn.model_selection import train_test_split
@@ -71,7 +71,6 @@ def normalizeVolStage(inputSignal, target_dBFS):
 
 # Use this function for processing if you already have the signal loaded using librosa
 def processPreloadedAudio(inputSignal, inputSignalSampleRate):
-    inputSignal = normalizeVolStage(inputSignal, -20.0)
     highPassedInputSignal = highPassFilterStage(
         inputSignal, inputSignalSampleRate)
     denoisedSignal = denoiseStage(highPassedInputSignal, inputSignalSampleRate)
@@ -88,13 +87,17 @@ def extract_feature(file_name, **kwargs):
     contrast = kwargs.get("contrast")
     tonnetz = kwargs.get("tonnetz")
 
+    rawsound = AudioSegment.from_file(file_name, "wav")  
+    normalized_sound = normalizeVolStage(rawsound, -20.0)
+    normalized_sound.export(file_name, format="wav")
+
     inputSignal, inputSignalSampleRate = librosa.load(file_name, sr=None)
 
     # audio processing stages invoked here
     X, sample_rate = processPreloadedAudio(inputSignal, inputSignalSampleRate)
 
     # save processed sig
-    soundfile.write("./records/archive/processed/recording.wav", X, sample_rate)
+    #soundfile.write("./records/archive/processed/recording.wav", X, sample_rate)
 
     if chroma or contrast:
         stft = np.abs(librosa.stft(X))
