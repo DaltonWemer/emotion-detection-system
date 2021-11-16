@@ -246,29 +246,26 @@ countDownDate.setSeconds(countDownDate.getSeconds() + 5);
 
 
 
+function startTimer(id, endtime) {
+    var timeleft = 5;
+    var recordingTimer = setInterval(function(){
+      if(timeleft <= 0){
+        clearInterval(recordingTimer);
+      } else {
+        document.getElementById("buttonText").innerHTML = timeleft;
+      }
+      timeleft -= 1;
+    }, 1000);
+}
+
+
+
+function decrementTime(){
+    display.textContent = seconds;
+}
+
 async function startRecording() {
 
-    var x = setInterval(function() {
-        // Get today's date and time
-        var now = new Date().getTime();
-          
-        // Find the distance between now and the count down date
-        var distance = countDownDate - now;
-          
-        // Time calculations for days, hours, minutes and seconds
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-          
-        // Output the result in an element with id="demo"
-        document.getElementsByClassName("timer").innerHTML = seconds
-        console.log(seconds)
-          
-        // If the count down is over, write some text 
-        if (distance < 0) {
-          clearInterval(x);
-        //   document.getElementById("demo").innerHTML = "EXPIRED";
-        }
-      }, 1000);
-    
     //Plays audio alerting the user that the recording has started
     var audio = new Audio('./img/retone.mp3');
 
@@ -299,13 +296,19 @@ async function startRecording() {
         mediaRecorder.mimeType = 'audio/wav'; // check this line for audio/wav
         mediaRecorder.audioChannels = 1;
         mediaRecorder.sampleRate = 44100;
+        
+        // Set the max length of recording
+        var maxLength = 5
+
+        display = document.querySelector('#time')
+        document.getElementById("time").style.display = "block";
+
+        startTimer();
 
         document.getElementById("recordingAnimation").style.display = "block";
         isRecording = true;
 
-        document.getElementById("start_code").innerHTML = "Stop";
-        document.getElementById("start_code").removeEventListener("click", startRecording);
-        document.getElementById("start_code").addEventListener("click", stopRecording);
+        document.getElementById("start_code").style.pointerEvents = 'none';
 
         mediaRecorder.ondataavailable = function (blob) {
             var blobURL = URL.createObjectURL(blob);
@@ -313,24 +316,23 @@ async function startRecording() {
             saveAudioBlob(blob, audio_recording_path)
             //mediaRecorder.save();
             document.getElementById("recordingAnimation").style.display = "none";
-            document.getElementById("start_code").removeEventListener("click", stopRecording);
-            document.getElementById("start_code").addEventListener("click", startRecording);
-            document.getElementById("start_code").innerHTML = "Record";
+            document.getElementById("loadingAnimation").style.display = "block"
+
+            document.getElementById("buttonText").innerHTML = "Record";
+            document.getElementById("start_code").style.pointerEvents = 'auto';
             start_code_function();
         };
 
         // Recorder is in miliseconds 
         mediaRecorder.start(5 * 1000);
 
-    
-
         // mediaRecorder.onstop = function() {
         //     mediaRecorder.save();
         // };
 
         function stopRecording() {
-            document.getElementById("loadingAnimation").style.display = "block"
-            mediaRecorder.stop();
+            console.log("We do not want to stop")
+            // mediaRecorder.stop();
         }
     }
 
