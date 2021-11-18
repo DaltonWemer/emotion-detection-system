@@ -9,8 +9,6 @@ from sklearn.model_selection import RepeatedStratifiedKFold
 import os
 import pickle
 
-print("hello world")
-
 X_train, X_test, y_train, y_test = load_data(test_size=0.15)
 print("[+] Number of training samples:", X_train.shape[0])
 print("[+] Number of testing samples:", X_test.shape[0])
@@ -32,9 +30,9 @@ model = MLPClassifier(**model_params)
 mlp_gs = MLPClassifier(max_iter=10000000)
 
 parameter_space = {
-    'hidden_layer_sizes': [(54),(55),(56)],
+    'hidden_layer_sizes': [(54)],
     'activation': ['tanh'],
-    'epsilon': [5e-10],
+    'epsilon': [5e-10,1e-10,1e-11],
     'solver': ['adam'],
     'alpha': [0.000115],
     'learning_rate': ['adaptive'],

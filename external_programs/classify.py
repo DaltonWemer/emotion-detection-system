@@ -23,7 +23,6 @@ def setup_logger(name, log_file, level=logging.INFO):
 
     return logger
 
-
 # use: `errorLogger.error("meesage")`
 errorLogger = setup_logger('error', 'records/errors.log')
 

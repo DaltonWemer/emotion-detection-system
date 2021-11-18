@@ -7,6 +7,7 @@ import pathlib
 import noisereduce
 from scipy import signal as sg
 from sklearn.model_selection import train_test_split
+from pydub import AudioSegment, effects 
 
 AVAILABLE_EMOTIONS = {
     "angry",
@@ -20,8 +21,6 @@ AVAILABLE_EMOTIONS = {
 directoryToTrainOver = "../external_programs/ourData/*.wav"
 
 # Using scipy's butterworth filter to highpass frequencies
-
-
 def highPassFilterStage(signal, sampleRate, cutoff=120.):
     b, a = sg.butter(6, cutoff / (sampleRate / 2.), 'highpass', analog=False)
     filteredSignal = sg.filtfilt(b, a, signal)
@@ -29,16 +28,12 @@ def highPassFilterStage(signal, sampleRate, cutoff=120.):
 
 
 # Using denoise library to denoise the signal
-
-
 def denoiseStage(signal, sampleRate):
     # time_constant_s is the time (sec) to compute the noise floor, increased from 1 to 4 for better results
     return noisereduce.reduce_noise(y=signal, sr=sampleRate, stationary=False, time_constant_s=4.0)
 
 
 # Use librosa to cut off silent sections before and after the voice command
-
-
 def trimStage(signal, samplePad=10000, threshold=25):
     trimmedSignal, index = librosa.effects.trim(
         signal, top_db=threshold, frame_length=256, hop_length=64)
@@ -64,9 +59,14 @@ def trimStage(signal, samplePad=10000, threshold=25):
     # Return the trimmed signal with padding to prevent slight cutoff in commands
     return signal[beginningIndex:endingIndex]
 
+#!!! IF YOU UN COMMENT THIS WHILE TRAINING, IT WILL PERMANENTLY ALTER YOUR TRAINING SET !!!
+# def normalizeVolStage(inputSignal, target_dBFS):
+#     change_in_dBFS = target_dBFS - inputSignal.dBFS
+#     print("Normalizing Vol. Initial dBFS: " + str(inputSignal.dBFS) + " Change applied: " + str(change_in_dBFS))
+#     return inputSignal.apply_gain(change_in_dBFS)
+
+
 # Use this function for processing if you already have the signal loaded using librosa
-
-
 def processPreloadedAudio(inputSignal, inputSignalSampleRate):
     highPassedInputSignal = highPassFilterStage(
         inputSignal, inputSignalSampleRate)
@@ -84,7 +84,10 @@ def extract_feature(file_name, **kwargs):
     contrast = kwargs.get("contrast")
     tonnetz = kwargs.get("tonnetz")
 
-
+    #!!! IF YOU UN COMMENT THIS WHILE TRAINING, IT WILL PERMANENTLY ALTER YOUR TRAINING SET !!!
+    # rawsound = AudioSegment.from_file(file_name, "wav")  
+    # normalized_sound = normalizeVolStage(rawsound, -20.0)
+    # normalized_sound.export(file_name, format="wav")
 
     inputSignal, inputSignalSampleRate = librosa.load(file_name, sr=None)
 
