@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score, ConfusionMatrixDisplay, classificati
 from sklearn.metrics import confusion_matrix
 from utils import load_data
 import matplotlib.pyplot as plt
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import RepeatedStratifiedKFold
 import os
 import pickle
 
@@ -32,19 +32,19 @@ model = MLPClassifier(**model_params)
 mlp_gs = MLPClassifier(max_iter=10000000)
 
 parameter_space = {
-    'hidden_layer_sizes': [(55),(50),(60)],
+    'hidden_layer_sizes': [(54),(55),(56)],
     'activation': ['tanh'],
-    'epsilon': [1e-08,1e-10,1e-9],
+    'epsilon': [5e-10],
     'solver': ['adam'],
-    'alpha': [0.0001, 0.00011, 0.00009],
-    'learning_rate': ['constant'],
+    'alpha': [0.000115],
+    'learning_rate': ['adaptive'],
 
 }
 
 print("[*] Training the model...")
 
-skf = StratifiedKFold(n_splits=3)
-model = GridSearchCV(mlp_gs, parameter_space, n_jobs=-1, cv=skf)
+rskf = RepeatedStratifiedKFold(n_splits=4, n_repeats=4, random_state=36851234)
+model = GridSearchCV(mlp_gs, parameter_space, n_jobs=-1, cv=rskf)
 model.fit(X_train, y_train) # X is train samples and y is the corresponding labels
 
 print('Best parameters found: ', model.best_params_)

@@ -64,7 +64,6 @@ def trimStage(signal, samplePad=10000, threshold=25):
     # Return the trimmed signal with padding to prevent slight cutoff in commands
     return signal[beginningIndex:endingIndex]
 
-
 # Use this function for processing if you already have the signal loaded using librosa
 
 
@@ -84,6 +83,8 @@ def extract_feature(file_name, **kwargs):
     mel = kwargs.get("mel")
     contrast = kwargs.get("contrast")
     tonnetz = kwargs.get("tonnetz")
+
+
 
     inputSignal, inputSignalSampleRate = librosa.load(file_name, sr=None)
 
