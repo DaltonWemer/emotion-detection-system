@@ -9,7 +9,7 @@ from scipy import signal as sg
 from sklearn.model_selection import train_test_split
 
 AVAILABLE_EMOTIONS = {
-    "anger",
+    "angry",
     "fearful",
     "happy",
     "normal",
@@ -91,7 +91,7 @@ def extract_feature(file_name, **kwargs):
     X, sample_rate = processPreloadedAudio(inputSignal, inputSignalSampleRate)
 
     # save processed sig
-    soundfile.write("../records/archive/processed/recording.wav", X, sample_rate)
+    soundfile.write("./records/archive/processed/recording.wav", X, sample_rate)
 
     if chroma or contrast:
         stft = np.abs(librosa.stft(X))
