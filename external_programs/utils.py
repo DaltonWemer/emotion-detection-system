@@ -17,7 +17,7 @@ AVAILABLE_EMOTIONS = {
 }
 
 # make it easier to adjust directory paths
-directoryToTrainOver = "../../dataToTrainOver/*.wav"
+directoryToTrainOver = "../external_programs/ourData/*.wav"
 
 # Using scipy's butterworth filter to highpass frequencies
 
@@ -91,7 +91,7 @@ def extract_feature(file_name, **kwargs):
     X, sample_rate = processPreloadedAudio(inputSignal, inputSignalSampleRate)
 
     # save processed sig
-    soundfile.write("./records/archive/processed/recording.wav", X, sample_rate)
+    #soundfile.write("./records/archive/processed/recording.wav", X, sample_rate)
 
     if chroma or contrast:
         stft = np.abs(librosa.stft(X))
