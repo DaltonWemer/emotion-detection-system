@@ -1,0 +1,13 @@
+Classification Date and Time: Nov-16-2021_08-38-56
+Classification Result: sad
+Time to Process: 0.793825 seconds
+Raw Recording: records/archive/raw/Nov-16-2021_08-38-56-raw.wav
+Processed Recording: records/archive/processed/Nov-16-2021_08-38-56-processed.wav
+Raw recording Length: 4.73687074829932 seconds
+Processed Recording Length: 4.468752834467121 seconds
+Classifier Model Data: 
+Alpha Value:	0.001
+Batch Size:	256
+Hidden Layer Sizes:	(500, 200, 300, 100, 400)
+Learning Rate:	adaptive
+Max Iterations:	50000

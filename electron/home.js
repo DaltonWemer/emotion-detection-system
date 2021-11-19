@@ -138,6 +138,7 @@ async function watchForAndDisplayResult() {
     fs.watch(result_path, (eventType, filename) => {
         if (eventType == 'change') {
             document.getElementById("loadingAnimation").style.display = "none"
+            document.getElementById("start_code").style.pointerEvents = 'auto';
             let fileContents = fs.readFileSync(result_path, { encoding: 'utf-8' });
             // document.getElementById("result").innerHTML = fileContents;
             // document.getElementById("result-container").style.visibility = "visible";
@@ -296,13 +297,8 @@ async function startRecording() {
         mediaRecorder.mimeType = 'audio/wav'; // check this line for audio/wav
         mediaRecorder.audioChannels = 1;
         mediaRecorder.sampleRate = 44100;
-        
-        // Set the max length of recording
-        var maxLength = 5
 
-        display = document.querySelector('#time')
-        document.getElementById("time").style.display = "block";
-
+        // Start timer for recording
         startTimer();
 
         document.getElementById("recordingAnimation").style.display = "block";
@@ -319,7 +315,6 @@ async function startRecording() {
             document.getElementById("loadingAnimation").style.display = "block"
 
             document.getElementById("buttonText").innerHTML = "Record";
-            document.getElementById("start_code").style.pointerEvents = 'auto';
             start_code_function();
         };
 

@@ -108,6 +108,7 @@ h1 { font-size: 40px }
 
 .linear-wipe {
   position: absolute;
+  user-select: none;
   top: 100px;
   left: 130px;
   background: linear-gradient(to right, #12c2e9 20%, #c471ed 40%, #f64f59 60%, #FFF 80%);
@@ -233,4 +234,9 @@ h1 { font-size: 40px }
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.buttonText {
+  user-select: none;
+  font-size: 16px;
 }
