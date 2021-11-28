@@ -26,17 +26,44 @@
 
         <h1 class="linear-wipe">How are you feeling?</h1>
 
-        <div style="height: 180px; width: 180px; position: absolute; margin-left: 32%; bottom: 55px;"
+        <div class="recording-animation"
             id="recordingAnimation"></div>
 
-        <div id="result-container">
-            <p class="result">Result:</p>
-            <p class="result" id="result">Sad</p>
+        <div class="recording-animation"
+            id="loadingAnimation"></div>
+
+            
+        <div id="sad-result-container">
+            <div id="sad-animation" class="emotion-animation"></div>
+            <p class="sad-result">Sad</p>
         </div>
 
-        <div id="start_code" type="submit" class="col-md-12 mx-auto button" value="Record"">
-            <h5>Record</h5>
+        <div id="happy-result-container">
+            <div id="happy-animation" class="emotion-animation"></div>
+            <p class="happy-result">Happy</p>
         </div>
+
+        <div id="normal-result-container">
+            <div id="normal-animation" class="emotion-animation"></div>
+            <p class="normal-result">Normal</p>
+        </div>
+
+        <div id="angry-result-container">
+            <div id="angry-animation" class="emotion-animation"></div>
+            <p class="angry-result">Angry</p>
+        </div>
+
+        <div id="fearful-result-container">
+            <div id="fearful-animation" class="emotion-animation"></div>
+            <p class="fearful-result">Fearful</p>
+        </div>
+        
+
+        <div id="start_code" type="submit" class="col-md-12 mx-auto button" value="Record"">
+            <h5 class="buttonText" id="buttonText">Record</h5>
+        </div>
+
+        <span class="timer" id="time"></span>
 
     </div>
 </body>

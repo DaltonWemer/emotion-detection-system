@@ -42,6 +42,16 @@ window.onload = function () {
     })
     document.getElementById("recordingAnimation").style.display = "none"
 
+    lottie.loadAnimation({
+        container: document.getElementById('loadingAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'img/processing.json'
+    })
+
+    document.getElementById("loadingAnimation").style.display = "none"
+
     //Create select options for mics on system
     navigator.mediaDevices.getUserMedia({ audio: true });
     navigator.mediaDevices.enumerateDevices()
@@ -62,14 +72,61 @@ window.onload = function () {
 
     watchForAndDisplayResult();
     watchForError();
+    loadAllAnimations();
+}
+
+function loadAllAnimations(){
+    // Load Sad Animation
+    lottie.loadAnimation({
+        container: document.getElementById('sad-animation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'img/sad.json'
+    })
+
+    // Load Anger Animation
+    lottie.loadAnimation({
+        container: document.getElementById('angry-animation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'img/angry.json'
+    })
+
+    // Load Happy Animation
+    lottie.loadAnimation({
+        container: document.getElementById('happy-animation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'img/happy.json'
+    })
+
+    // Load Normal Animation
+    lottie.loadAnimation({
+        container: document.getElementById('normal-animation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'img/normal.json'
+    })
+
+     // Load Fearful Animation
+     lottie.loadAnimation({
+        container: document.getElementById('fearful-animation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'img/fearful.json'
+    })
+
 }
 
 async function watchForError() {
     fs.watch(error_log_path, (eventType, filename) => {
         if (eventType == 'change') {
-            document.getElementById("result").innerHTML = "error, check logs";
-            document.getElementById("result-container").style.visibility = "visible";
-            document.getElementById("result-container").style.backgroundColor = "#EE4B2B";
+            document.getElementById("loadingAnimation").style.display = "none"
         }
     });
 }
@@ -77,24 +134,24 @@ async function watchForError() {
 async function watchForAndDisplayResult() {
     fs.watch(result_path, (eventType, filename) => {
         if (eventType == 'change') {
+            document.getElementById("loadingAnimation").style.display = "none"
+            document.getElementById("start_code").style.pointerEvents = 'auto';
             let fileContents = fs.readFileSync(result_path, { encoding: 'utf-8' });
-            document.getElementById("result").innerHTML = fileContents;
-            document.getElementById("result-container").style.visibility = "visible";
             switch (fileContents) {
                 case "anger":
-                    document.getElementById("result-container").style.backgroundColor = "#d62d20";
+                    document.getElementById("anger-result-container").style.display = 'flex';
                     break;
                 case "happy":
-                    document.getElementById("result-container").style.backgroundColor = "#ffa700";
+                    document.getElementById("happy-result-container").style.display = 'flex';
                     break;
                 case "fearful":
-                    document.getElementById("result-container").style.backgroundColor = "#962fbf";
+                    document.getElementById("fearful-result-container").style.display = 'flex';
                     break;
                 case "normal":
-                    document.getElementById("result-container").style.backgroundColor = "#ffffff";
+                    document.getElementById("normal-result-container").style.display = 'flex';
                     break;
                 case "sad":
-                    document.getElementById("result-container").style.backgroundColor = "#0057e7";
+                    document.getElementById("sad-result-container").style.display = 'flex';
                     break;
                 default:
                     document.getElementById("result-container").style.backgroundColor = "#111111";
@@ -180,12 +237,41 @@ const sleep = (milliseconds) => {
 
 let chunks = []
 isRecording = false
+var countDownDate = new Date();
+countDownDate.setSeconds(countDownDate.getSeconds() + 5);
+
+
+
+function startTimer(id, endtime) {
+    var timeleft = 5;
+    var recordingTimer = setInterval(function(){
+      if(timeleft <= 0){
+        clearInterval(recordingTimer);
+      } else {
+        document.getElementById("buttonText").innerHTML = timeleft;
+      }
+      timeleft -= 1;
+    }, 1000);
+}
+
+
+
+function decrementTime(){
+    display.textContent = seconds;
+}
 
 async function startRecording() {
 
     //Plays audio alerting the user that the recording has started
     var audio = new Audio('./img/retone.mp3');
-    document.getElementById("result-container").style.visibility = "hidden";
+
+    // Hide all possible results
+    document.getElementById("sad-result-container").style.display = 'none';
+    document.getElementById("angry-result-container").style.display = 'none';
+    document.getElementById("fearful-result-container").style.display = 'none';
+    document.getElementById("normal-result-container").style.display = 'none';
+    document.getElementById("happy-result-container").style.display = 'none';
+
     audio.play();
     await sleep(400); //audio clip is 360 milliseconds
     // Filter out webcams from our media and choose mic
@@ -207,12 +293,13 @@ async function startRecording() {
         mediaRecorder.audioChannels = 1;
         mediaRecorder.sampleRate = 48000;
 
+        // Start timer for recording
+        startTimer();
+
         document.getElementById("recordingAnimation").style.display = "block";
         isRecording = true;
 
-        document.getElementById("start_code").innerHTML = "Stop";
-        document.getElementById("start_code").removeEventListener("click", startRecording);
-        document.getElementById("start_code").addEventListener("click", stopRecording);
+        document.getElementById("start_code").style.pointerEvents = 'none';
 
         mediaRecorder.ondataavailable = function (blob) {
             var blobURL = URL.createObjectURL(blob);
@@ -220,21 +307,18 @@ async function startRecording() {
             saveAudioBlob(blob, audio_recording_path)
             //mediaRecorder.save();
             document.getElementById("recordingAnimation").style.display = "none";
-            document.getElementById("start_code").removeEventListener("click", stopRecording);
-            document.getElementById("start_code").addEventListener("click", startRecording);
-            document.getElementById("start_code").innerHTML = "Record";
+            document.getElementById("loadingAnimation").style.display = "block"
+
+            document.getElementById("buttonText").innerHTML = "Record";
             start_code_function();
         };
 
         // Recorder is in miliseconds 
         mediaRecorder.start(5 * 1000);
 
-        // mediaRecorder.onstop = function() {
-        //     mediaRecorder.save();
-        // };
-
         function stopRecording() {
-            mediaRecorder.stop();
+            console.log("We do not want to stop")
+            // mediaRecorder.stop();
         }
     }
 
@@ -268,11 +352,6 @@ async function moveFile(oldPath, newPath) {
 saveAudioBlob = async function (audioBlobToSave, fPath) {
     print_both(`Trying to save: ${fPath}`);
 
-    // //move old audio file
-    // let newFileName = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.wav'").format(new Date());
-    // let newPath = audio_archive_path + newFileName;
-    // await moveFile(fPath, newPath);
-
     // create the writeStream - this line creates the 0kb file, ready to be written to
     const writeStream = fs.createWriteStream(fPath);
     const arrayBuffer = await audioBlobToSave.arrayBuffer(); // ArrayBuffer(17955) {}
@@ -286,9 +365,6 @@ saveAudioBlob = async function (audioBlobToSave, fPath) {
 
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("start_code").addEventListener("click", startRecording);
-    //document.getElementById("mircophone").addEventListener("click", checkDevice);
-    //document.getElementById("send_code").addEventListener("click", send_code_function);
-    //document.getElementById("stop_code").addEventListener("click", stop_code_function);
     document.getElementById("open_file").addEventListener("click", open_file_function);
 });
 
