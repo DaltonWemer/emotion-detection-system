@@ -127,9 +127,6 @@ async function watchForError() {
     fs.watch(error_log_path, (eventType, filename) => {
         if (eventType == 'change') {
             document.getElementById("loadingAnimation").style.display = "none"
-            // document.getElementById("result").innerHTML = "error, check logs";
-            // document.getElementById("result-container").style.visibility = "visible";
-            // document.getElementById("result-container").style.backgroundColor = "#EE4B2B";
         }
     });
 }
@@ -140,8 +137,6 @@ async function watchForAndDisplayResult() {
             document.getElementById("loadingAnimation").style.display = "none"
             document.getElementById("start_code").style.pointerEvents = 'auto';
             let fileContents = fs.readFileSync(result_path, { encoding: 'utf-8' });
-            // document.getElementById("result").innerHTML = fileContents;
-            // document.getElementById("result-container").style.visibility = "visible";
             switch (fileContents) {
                 case "anger":
                     document.getElementById("anger-result-container").style.display = 'flex';
@@ -321,10 +316,6 @@ async function startRecording() {
         // Recorder is in miliseconds 
         mediaRecorder.start(5 * 1000);
 
-        // mediaRecorder.onstop = function() {
-        //     mediaRecorder.save();
-        // };
-
         function stopRecording() {
             console.log("We do not want to stop")
             // mediaRecorder.stop();
@@ -361,11 +352,6 @@ async function moveFile(oldPath, newPath) {
 saveAudioBlob = async function (audioBlobToSave, fPath) {
     print_both(`Trying to save: ${fPath}`);
 
-    // //move old audio file
-    // let newFileName = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.wav'").format(new Date());
-    // let newPath = audio_archive_path + newFileName;
-    // await moveFile(fPath, newPath);
-
     // create the writeStream - this line creates the 0kb file, ready to be written to
     const writeStream = fs.createWriteStream(fPath);
     const arrayBuffer = await audioBlobToSave.arrayBuffer(); // ArrayBuffer(17955) {}
@@ -379,9 +365,6 @@ saveAudioBlob = async function (audioBlobToSave, fPath) {
 
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("start_code").addEventListener("click", startRecording);
-    //document.getElementById("mircophone").addEventListener("click", checkDevice);
-    //document.getElementById("send_code").addEventListener("click", send_code_function);
-    //document.getElementById("stop_code").addEventListener("click", stop_code_function);
     document.getElementById("open_file").addEventListener("click", open_file_function);
 });
 
