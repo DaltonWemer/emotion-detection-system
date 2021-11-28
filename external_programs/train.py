@@ -9,7 +9,7 @@ from sklearn.model_selection import RepeatedStratifiedKFold
 import os
 import pickle
 
-X_train, X_test, y_train, y_test = load_data(test_size=0.15)
+X_train, X_test, y_train, y_test = load_data(test_size=0.25)
 print("[+] Number of training samples:", X_train.shape[0])
 print("[+] Number of testing samples:", X_test.shape[0])
 print("[+] Number of features:", X_train.shape[1])
@@ -58,16 +58,16 @@ pickle.dump(model, open("../external_programs/result/mlp_classifier.model", "wb"
 confusion_matrix = confusion_matrix(y_true=y_test, y_pred=y_pred)
 disp = ConfusionMatrixDisplay(confusion_matrix=confusion_matrix, display_labels=model.classes_)
 disp.plot()
-plt.savefig("../external_programs/result/confusion_matrix.jpg")
+plt.savefig("external_programs/result/confusion_matrix.jpg")
 
-f= open("../external_programs/result/classification_report.txt","w+")
+f= open("external_programs/result/classification_report.txt","w+")
 f.write(classification_report(y_true=y_test, y_pred=y_pred))
 f.close()
 
-f = open("../external_programs/result/best_parameters.txt","w+")
+f = open("external_programs/result/best_parameters.txt","w+")
 f.write(str(model.best_params_))
 f.close()
 
-f = open("../external_programs/result/accuracy.txt","w+")
+f = open("external_programs/result/accuracy.txt","w+")
 f.write(str(accuracy))
 f.close()

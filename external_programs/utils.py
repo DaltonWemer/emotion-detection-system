@@ -18,7 +18,7 @@ AVAILABLE_EMOTIONS = {
 }
 
 # make it easier to adjust directory paths
-directoryToTrainOver = "../external_programs/ourData/*.wav"
+directoryToTrainOver = "ourData/*.wav"
 
 # Using scipy's butterworth filter to highpass frequencies
 def highPassFilterStage(signal, sampleRate, cutoff=120.):
@@ -59,13 +59,6 @@ def trimStage(signal, samplePad=10000, threshold=25):
     # Return the trimmed signal with padding to prevent slight cutoff in commands
     return signal[beginningIndex:endingIndex]
 
-#!!! IF YOU UN COMMENT THIS WHILE TRAINING, IT WILL PERMANENTLY ALTER YOUR TRAINING SET !!!
-# def normalizeVolStage(inputSignal, target_dBFS):
-#     change_in_dBFS = target_dBFS - inputSignal.dBFS
-#     print("Normalizing Vol. Initial dBFS: " + str(inputSignal.dBFS) + " Change applied: " + str(change_in_dBFS))
-#     return inputSignal.apply_gain(change_in_dBFS)
-
-
 # Use this function for processing if you already have the signal loaded using librosa
 def processPreloadedAudio(inputSignal, inputSignalSampleRate):
     highPassedInputSignal = highPassFilterStage(
@@ -84,18 +77,13 @@ def extract_feature(file_name, **kwargs):
     contrast = kwargs.get("contrast")
     tonnetz = kwargs.get("tonnetz")
 
-    #!!! IF YOU UN COMMENT THIS WHILE TRAINING, IT WILL PERMANENTLY ALTER YOUR TRAINING SET !!!
-    # rawsound = AudioSegment.from_file(file_name, "wav")  
-    # normalized_sound = normalizeVolStage(rawsound, -20.0)
-    # normalized_sound.export(file_name, format="wav")
-
     inputSignal, inputSignalSampleRate = librosa.load(file_name, sr=None)
 
     # audio processing stages invoked here
     X, sample_rate = processPreloadedAudio(inputSignal, inputSignalSampleRate)
 
     # save processed sig
-    #soundfile.write("./records/archive/processed/recording.wav", X, sample_rate)
+    soundfile.write("./records/archive/processed/recording.wav", X, sample_rate)
 
     if chroma or contrast:
         stft = np.abs(librosa.stft(X))
