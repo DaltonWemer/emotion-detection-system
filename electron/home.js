@@ -127,7 +127,7 @@ function send_to_program(str) {
 function start_code_function(evt) {
     print_both('Initiating program');
     log_data("Recording in progress");
-    child = exec("python ./external_programs/classify.py", function (error, stdout, stderr) {
+    child = exec("python3 ./external_programs/classify.py", function (error, stdout, stderr) {
         if (error !== null) {
             print_both('exec error: ' + error);
             log_error("ELECTRON ERROR: Error executing classify.py: " + error);
