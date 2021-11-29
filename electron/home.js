@@ -138,8 +138,8 @@ async function watchForAndDisplayResult() {
             document.getElementById("start_code").style.pointerEvents = 'auto';
             let fileContents = fs.readFileSync(result_path, { encoding: 'utf-8' });
             switch (fileContents) {
-                case "anger":
-                    document.getElementById("anger-result-container").style.display = 'flex';
+                case "angry":
+                    document.getElementById("angry-result-container").style.display = 'flex';
                     break;
                 case "happy":
                     document.getElementById("happy-result-container").style.display = 'flex';
