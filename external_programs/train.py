@@ -44,8 +44,8 @@ y_true, y_pred =y_test, model.predict(X_test)
 accuracy = accuracy_score(y_true=y_test, y_pred=y_pred)
 print("Accuracy: {:.2f}%".format(accuracy*100))
 
-if not os.path.isdir("result"):
-    os.mkdir("result")
+if not os.path.isdir("external_programs/result"):
+    os.mkdir("external_programs/result")
 
 pickle.dump(model, open("external_programs/result/mlp_classifier.model", "wb"))
 
