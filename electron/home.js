@@ -1,3 +1,4 @@
+// Core Electron Packages and Third Party Libraries
 const ipc = require('electron').ipcRenderer;
 var MediaStreamRecorder = require('msr');
 var lottie = require('lottie-web');
@@ -27,11 +28,13 @@ const dataLogger = new Console(normOutput, errOutput); // create error Logger
 var nodeConsole = require('console');
 var my_console = new nodeConsole.Console(process.stdout, process.stderr);
 
-//Global Vars
+//Global Variables
 var child;
 var audioInputSelect;
 
+// Function called before DOM renders
 window.onload = function () {
+
     // Load our recording animation into memory
     lottie.loadAnimation({
         container: document.getElementById('recordingAnimation'),
@@ -50,16 +53,17 @@ window.onload = function () {
         path: 'img/processing.json'
     })
 
+    // Hide the loading animation when not processing any data
     document.getElementById("loadingAnimation").style.display = "none"
 
-    //Create select options for mics on system
+    // Create select options for mics on system
     navigator.mediaDevices.getUserMedia({ audio: true });
     navigator.mediaDevices.enumerateDevices()
         .then(function (devices) {
             audioInputSelect = document.getElementById("microphone-select");
             let usedGroupIds = [];
             devices.forEach(function (device) {
-                //filter out video devices and duplicates
+                // Filter out video devices and duplicates
                 if (device.kind == "audioinput" && usedGroupIds.indexOf(device.groupId) == -1) {
                     usedGroupIds.push(device.groupId);
                     var option = document.createElement("option");
@@ -75,7 +79,9 @@ window.onload = function () {
     loadAllAnimations();
 }
 
+// Load the rest of the animations that can't be visible directly after the software launches
 function loadAllAnimations(){
+
     // Load Sad Animation
     lottie.loadAnimation({
         container: document.getElementById('sad-animation'),
@@ -132,6 +138,8 @@ function loadAllAnimations(){
 
 }
 
+// Check the error directory and display the error animation and message 
+// if a new file gets added to it
 async function watchForError() {
     fs.watch(error_log_path, (eventType, filename) => {
         if (eventType == 'change') {
@@ -141,12 +149,18 @@ async function watchForError() {
     });
 }
 
+// Watch the .txt file that we use to hold the result, when it updates we read the file's word into
+// a variable and render the corresponding text and animation. 
 async function watchForAndDisplayResult() {
     fs.watch(result_path, (eventType, filename) => {
         if (eventType == 'change') {
+            // Hide the loading animation when classification completes
             document.getElementById("loadingAnimation").style.display = "none"
             document.getElementById("start_code").style.pointerEvents = 'auto';
+
             let fileContents = fs.readFileSync(result_path, { encoding: 'utf-8' });
+
+            // Render emotion containers based on the result in the .txt file
             switch (fileContents) {
                 case "angry":
                     document.getElementById("angry-result-container").style.display = 'flex';
@@ -171,18 +185,23 @@ async function watchForAndDisplayResult() {
     });
 }
 
+// Denotes when a specific log is coming from our front end (Javascript) or backend (Python)
 function print_both(str) {
     console.log('Javascript: ' + str);
 }
 
+// Logs errors to the console as they occur
 function log_error(str) {
     dataLogger.error("\n\r\n\rError: " + str);
 }
 
+// Logs data to the console as the data as computed
 function log_data(str) {
     dataLogger.log("\n\r\n\r" + str);
 }
 
+// Used for testing sending data back to our Python backend, it a useful developer tool
+// but is not interactable using the GUI by the user
 function send_to_program(str) {
     child.stdin.write(str);
     child.stdout.on('data', function (data) {
@@ -190,7 +209,8 @@ function send_to_program(str) {
     });
 }
 
-// starts program execution from within javascript and
+// Starts Python program execution from within javascript, will log if there are any issues
+// in reaching out to our backend
 function start_code_function(evt) {
     print_both('Initiating program');
     log_data("Recording in progress");
@@ -206,30 +226,26 @@ function start_code_function(evt) {
     });
 }
 
-// sends data to program
+// Sends string data to a Python program, not reachable by the end user
+// can be useful for future development.
 function send_code_function(evt) {
     let string_to_send = document.getElementById("string_to_send").value;
     print_both('Sending "' + string_to_send + '" to program:');
     send_to_program(string_to_send);
 }
 
-// sends termination message to python program and closed stream
-// that recieves information from it
+// Sends termination message to python program and closed stream
+// that recieves information from it.
 function stop_code_function(evt) {
     print_both('Terminated program');
     send_to_program("terminate");
     child.stdin.end();
 }
 
-// requests os to open a file explorer to recording archive
+// Requests OS to open a file explorer to recording archive
 function open_file_function(evt) {
-    // print_both('From gui_example.js sending a request to main.js via ipc');
-    // ipc.send('open_json_file');
-
     var path = open_file_path;
-    //handle for different os 
-    //if (macOS) { path = './' }
-    //if (linux) { }
+
 
     openExplorer(path, err => {
         if (err) {
@@ -241,18 +257,16 @@ function open_file_function(evt) {
     });
 }
 
+// Creates the asynchronous promise that is used in our timer function
 const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
-let chunks = []
-isRecording = false
-var countDownDate = new Date();
-countDownDate.setSeconds(countDownDate.getSeconds() + 5);
-
-
-
-function startTimer(id, endtime) {
+// Timer starts at 5 and counts down until the timer hits 1,updating every second
+// used to show the user how much time they have 
+// left in their recording before the system
+// begins classifying the audio
+function startTimer() {
     var timeleft = 5;
     var recordingTimer = setInterval(function(){
       if(timeleft <= 0){
@@ -264,12 +278,7 @@ function startTimer(id, endtime) {
     }, 1000);
 }
 
-
-
-function decrementTime(){
-    display.textContent = seconds;
-}
-
+// Starts recording the audio file that will be sent to the audio processor
 async function startRecording() {
 
     //Plays audio alerting the user that the recording has started
@@ -282,12 +291,15 @@ async function startRecording() {
     document.getElementById("normal-result-container").style.display = 'none';
     document.getElementById("happy-result-container").style.display = 'none';
     document.getElementById("error-result-container").style.display = 'none';
-
+    // Play the recording tone
     audio.play();
+    // Don't start recording until the audio clip has finished playing
+
     await sleep(400); //audio clip is 360 milliseconds
+
     // Filter out webcams from our media and choose mic
     let audioSource = audioInputSelect.value;
-    console.log(audioSource);
+    
     var mediaConstraints = {
         audio: { deviceId: audioSource }
     };
@@ -296,48 +308,48 @@ async function startRecording() {
     navigator.getUserMedia(mediaConstraints, onMediaSuccess, onMediaError);
     // If we have access to the microphone, create the MediaStreamRecorder and start recording
     function onMediaSuccess(stream) {
-
         var mediaRecorder = new MediaStreamRecorder(stream);
         //console.log("recording with: " + mediaConstraints.audio.deviceId);
 
-        mediaRecorder.mimeType = 'audio/wav'; // check this line for audio/wav
+        // Set our paramemeters for our audio recording
+        mediaRecorder.mimeType = 'audio/wav';
         mediaRecorder.audioChannels = 1;
         mediaRecorder.sampleRate = 48000;
 
         // Start timer for recording
         startTimer();
-
+        
+        // Display the recording animation
         document.getElementById("recordingAnimation").style.display = "block";
         isRecording = true;
-
         document.getElementById("start_code").style.pointerEvents = 'none';
 
         mediaRecorder.ondataavailable = function (blob) {
             var blobURL = URL.createObjectURL(blob);
             mediaRecorder.stop();
             saveAudioBlob(blob, audio_recording_path)
-            //mediaRecorder.save();
+            // Hide the recording animation
             document.getElementById("recordingAnimation").style.display = "none";
+            // Show the loading animation
             document.getElementById("loadingAnimation").style.display = "block"
 
+            // Update the text to show the record functionality
             document.getElementById("buttonText").innerHTML = "Record";
             start_code_function();
         };
 
-        // Recorder is in miliseconds 
+        // Recorder is in miliseconds, so record for 5 seconds
         mediaRecorder.start(5 * 1000);
-
-        function stopRecording() {
-            console.log("We do not want to stop")
-            // mediaRecorder.stop();
-        }
     }
 
+    // If something goes wrong in the recording process, the system will log 
+    // it to the console
     function onMediaError(e) {
         console.error('media error', e);
     }
 }
 
+// Update the audio file with the new data returned by the media recorder
 function bufferToStream(buffer) {
     let stream = new Readable();
     stream.push(buffer);
@@ -345,21 +357,8 @@ function bufferToStream(buffer) {
     return stream;
 }
 
-async function moveFile(oldPath, newPath) {
-    if (!fs.existsSync(audio_archive_path)) {
-        await fs.mkdir(path.dirname(newPath), { recursive: false }, (err) => {
-            if (err) {
-                print_both(err);
-            }
-        });
-    }
-    return fs.rename(oldPath, newPath, (err) => {
-        if (err) {
-            print_both(err);
-        }
-    });
-}
-
+// Save the audio file once the recording in progress and pushes 
+// the blob into permenant storage
 saveAudioBlob = async function (audioBlobToSave, fPath) {
     print_both(`Trying to save: ${fPath}`);
 
@@ -374,6 +373,7 @@ saveAudioBlob = async function (audioBlobToSave, fPath) {
     readStream.pipe(writeStream);
 }
 
+// Even listeners for the start recording button and open file system
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("start_code").addEventListener("click", startRecording);
     document.getElementById("open_file").addEventListener("click", open_file_function);

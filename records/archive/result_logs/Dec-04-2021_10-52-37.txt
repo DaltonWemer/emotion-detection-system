@@ -1,0 +1,7 @@
+Classification Date and Time: Dec-04-2021_10-52-37
+Classification Result: sad
+Time to Process: 0.566893 seconds
+Raw Recording: records/archive/raw/Dec-04-2021_10-52-37-raw.wav
+Processed Recording: records/archive/processed/Dec-04-2021_10-52-37-processed.wav
+Raw recording Length: 4.48 seconds
+Processed Recording Length: 3.824671201814059 seconds
