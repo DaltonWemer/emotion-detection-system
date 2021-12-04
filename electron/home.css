@@ -178,6 +178,12 @@ h1 { font-size: 40px }
   justify-content: center;
 }
 
+#error-result-container{
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
 .sad-result {
   position: absolute;
   background: linear-gradient(to right, #009ffd 20%, #009ffd 40%, #2a2a72 60%, #2a2a72 80%);
@@ -227,6 +233,18 @@ h1 { font-size: 40px }
 .happy-result {
   position: absolute;
   background: linear-gradient(to right, #ffdd00 20%, #ffdd00 40%, #fbb034 60%, #fbb034 80%);
+  bottom: 185px;
+  background-size: 200% auto;
+  color: #000;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.error-result {
+  position: absolute;
+  background: linear-gradient(to right, #fe5858 20%, #fe5858 40%, #ee9617 60%, #ee9617 80%);
   bottom: 185px;
   background-size: 200% auto;
   color: #000;

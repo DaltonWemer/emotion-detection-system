@@ -1,0 +1,7 @@
+Classification Date and Time: Dec-04-2021_10-34-19
+Classification Result: happy
+Time to Process: 0.492208 seconds
+Raw Recording: records/archive/raw/Dec-04-2021_10-34-19-raw.wav
+Processed Recording: records/archive/processed/Dec-04-2021_10-34-19-processed.wav
+Raw recording Length: 4.522675736961451 seconds
+Processed Recording Length: 3.8443537414965987 seconds

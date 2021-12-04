@@ -1,0 +1,7 @@
+Classification Date and Time: Nov-28-2021_21-46-11
+Classification Result: angry
+Time to Process: 0.461874 seconds
+Raw Recording: records/archive/raw/Nov-28-2021_21-46-11-raw.wav
+Processed Recording: records/archive/processed/Nov-28-2021_21-46-11-processed.wav
+Raw recording Length: 4.565351473922902 seconds
+Processed Recording Length: 4.565351473922902 seconds

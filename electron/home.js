@@ -121,12 +121,22 @@ function loadAllAnimations(){
         path: 'img/fearful.json'
     })
 
+    // Load Fearful Animation
+    lottie.loadAnimation({
+        container: document.getElementById('error-animation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'img/error.json'
+    })
+
 }
 
 async function watchForError() {
     fs.watch(error_log_path, (eventType, filename) => {
         if (eventType == 'change') {
             document.getElementById("loadingAnimation").style.display = "none"
+            document.getElementById("error-result-container").style.display = 'flex';
         }
     });
 }
@@ -271,6 +281,7 @@ async function startRecording() {
     document.getElementById("fearful-result-container").style.display = 'none';
     document.getElementById("normal-result-container").style.display = 'none';
     document.getElementById("happy-result-container").style.display = 'none';
+    document.getElementById("error-result-container").style.display = 'none';
 
     audio.play();
     await sleep(400); //audio clip is 360 milliseconds

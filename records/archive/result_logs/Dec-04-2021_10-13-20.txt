@@ -1,0 +1,7 @@
+Classification Date and Time: Dec-04-2021_10-13-20
+Classification Result: normal
+Time to Process: 0.697664 seconds
+Raw Recording: records/archive/raw/Dec-04-2021_10-13-20-raw.wav
+Processed Recording: records/archive/processed/Dec-04-2021_10-13-20-processed.wav
+Raw recording Length: 4.522675736961451 seconds
+Processed Recording Length: 4.188344671201814 seconds
