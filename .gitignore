@@ -16,6 +16,7 @@
 *.vcxproj.filters
 *.vcxproj.user
 *.xcodeproj
+/records/archive/result_logs/**
 /.idea/
 /dist/
 /external_binaries/
