@@ -1,3 +1,6 @@
+# Copyright (c) Missouri State University and contributors. All rights reserved.
+# Licensed under the MIT license. See LICENSE file in the project root for details.
+
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score, ConfusionMatrixDisplay, classification_report, plot_roc_curve, \
     RocCurveDisplay
