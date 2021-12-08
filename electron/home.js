@@ -144,6 +144,7 @@ async function watchForError() {
     fs.watch(error_log_path, (eventType, filename) => {
         if (eventType == 'change') {
             document.getElementById("loadingAnimation").style.display = "none"
+            document.getElementById("start_code").style.pointerEvents = 'auto';
             document.getElementById("error-result-container").style.display = 'flex';
         }
     });
