@@ -1,3 +1,6 @@
+// Copyright (c) Missouri State University and contributors. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for details.
+
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, ipcMain, Notification } = require("electron");
 const exec = require('child_process').exec;
