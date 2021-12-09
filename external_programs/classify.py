@@ -66,9 +66,7 @@ if __name__ == "__main__":
     # predict 
     try:
         result = model.predict(features)[0]
-        
-        # Used for logging
-        endTime = datetime.datetime.now()
+        endTime = datetime.datetime.now() # Used for logging
         
     except Exception as e:
         errorLogger.error("~Failed to make prediction\n" +
@@ -106,7 +104,7 @@ if __name__ == "__main__":
             "~Failed to archive recording\n" + str(e), exc_info=True)
         exit()
     
-    # Create successful log, to be found in records/archive/result_logs
+    # create successful log, to be found in records/archive/result_logs
     try:
         logname = os.path.join(dirname, '../records/archive/result_logs/' + formattedDate + '.txt')
         # classificationTime = datetime.timedelta(startTime, endTime)
@@ -127,12 +125,7 @@ if __name__ == "__main__":
                 "\nProcessed Recording: " + "records/archive/processed/" + formattedDate + "-processed.wav" +
                 "\nRaw recording Length: " + str(rawDur) + " seconds" +
                 "\nProcessed Recording Length: " + str(procDur) + " seconds")
-                #"\nClassifier Model Data: " +
-                #"\nAlpha Value:\t" + str(model.alpha) +
-                #"\nBatch Size:\t" + str(model.batch_size) +
-                #"\nHidden Layer Sizes:\t" + str(model.hidden_layer_sizes) +
-                #"\nLearning Rate:\t" + str(model.learning_rate) +
-                #"\nMax Iterations:\t" + str(model.max_iter))
+
         file.close()
         eventLogger.info("\nSpecific classification log: result_logs/" +  formattedDate + ".txt")
         
