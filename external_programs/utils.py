@@ -22,8 +22,6 @@ AVAILABLE_EMOTIONS = {
 directoryToTrainOver = "ourData/*.wav"
 
 # Using scipy's butterworth filter to highpass frequencies
-
-
 def highPassFilterStage(signal, sampleRate, cutoff=120.):
     b, a = sg.butter(6, cutoff / (sampleRate / 2.), 'highpass', analog=False)
     filteredSignal = sg.filtfilt(b, a, signal)
@@ -31,16 +29,12 @@ def highPassFilterStage(signal, sampleRate, cutoff=120.):
 
 
 # Using denoise library to denoise the signal
-
-
 def denoiseStage(signal, sampleRate):
     # time_constant_s is the time (sec) to compute the noise floor, increased from 1 to 4 for better results
     return noisereduce.reduce_noise(y=signal, sr=sampleRate, stationary=False, time_constant_s=4.0)
 
 
 # Use librosa to cut off silent sections before and after the voice command
-
-
 def trimStage(signal, samplePad=10000, threshold=25):
     trimmedSignal, index = librosa.effects.trim(
         signal, top_db=threshold, frame_length=256, hop_length=64)
